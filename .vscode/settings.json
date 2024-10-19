@@ -1,0 +1,9 @@
+{
+	"editor.codeActionsOnSave": {
+		"quickfix.biome": "explicit"
+	},
+	"editor.formatOnSave": true,
+	"editor.formatOnSaveMode": "modificationsIfAvailable",
+	"editor.defaultFormatter": "biomejs.biome",
+	"typescript.tsdk": "node_modules/typescript/lib"
+}

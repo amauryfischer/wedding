@@ -1,0 +1,28 @@
+{
+	"organizeImports": {
+		"enabled": true
+	},
+	"linter": {
+		"rules": {
+			"style": {
+				"useImportType": "off"
+			},
+			"correctness": {
+				"useExhaustiveDependencies": "off"
+			},
+			"suspicious": {
+				"noExplicitAny": "off"
+			},
+			"complexity": {
+				"noForEach": "off"
+			}
+		}
+	},
+	"javascript": {
+		"formatter": {
+			"semicolons": "asNeeded",
+			"trailingCommas": "none",
+			"quoteStyle": "double"
+		}
+	}
+}
