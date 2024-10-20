@@ -240,21 +240,21 @@ const colors = css`
     ██      ██   ██ ██   ██ ██   ██ ██  ██  ██ ██      ██      
      ██████ ██   ██ ██   ██ ██   ██ ██      ██ ███████ ███████ 
   */
-  --caramel-hue: 27;
-  --caramel-saturation: 74%;
+  --caramel-hue: 12;
+  --caramel-saturation: 54%;
 
   --caramel50-lightness: 90%;
-  --caramel100-lightness: 85%;
-  --caramel200-lightness: 75%;
-  --caramel300-lightness: 65%;
-  --caramel400-lightness: 55%;
-  --caramel500-lightness: 45%;
-  --caramel600-lightness: 35%;
-  --caramel700-lightness: 25%;
-  --caramel800-lightness: 15%;
-  --caramel900-lightness: 5%;
+  --caramel100-lightness: 83%;
+  --caramel200-lightness: 73%;
+  --caramel300-lightness: 63%;
+  --caramel400-lightness: 53%;
+  --caramel500-lightness: 43%;
+  --caramel600-lightness: 33%;
+  --caramel700-lightness: 23%;
+  --caramel800-lightness: 13%;
+  --caramel900-lightness: 3%;
 
-  --caramel-lightness: var(--caramel400-lightness);
+  --caramel-lightness: var(--caramel500-lightness);
 
   // --caramel: hsl(27, 74%, 55%);
   --caramel: hsl(
@@ -264,6 +264,12 @@ const colors = css`
   );
   --caramel-text-color: white;
 
+
+  --caramel50: hsl(
+    var(--caramel-hue),
+    100%,
+    96%
+  );
   // hsl(27, 74%, 85%)
   --caramel100: hsl(
     var(--caramel-hue),

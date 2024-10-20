@@ -59,7 +59,9 @@ const color_nextui = `
     --nextui-danger700: var(--error-hue) var(--error-saturation) var(--error700-lightness);
     --nextui-danger800: var(--error-hue) var(--error-saturation) var(--error800-lightness);
     --nextui-danger900: var(--error-hue) var(--error-saturation) var(--error900-lightness);
-
+    --nextui-radius-small: 0px;
+    --nextui-radius-medium: 0px;
+    --nextui-radius-large: 0px;
 `
 
 export default color_nextui

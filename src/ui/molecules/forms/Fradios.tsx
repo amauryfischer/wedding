@@ -1,4 +1,4 @@
-import { Input } from "@nextui-org/react"
+import { Input, Radio, RadioGroup } from "@nextui-org/react"
 import { useFormContext, useController } from "react-hook-form"
 
 interface FTextProps {
@@ -8,14 +8,17 @@ interface FTextProps {
 	autoFocus?: boolean
 	size?: "sm" | "md" | "lg"
 	hideLabel?: boolean
+	options: { label: string; value: string }[]
+	orientation?: "vertical" | "horizontal"
 }
 
-const FText = ({
-	label = undefined,
-	placeholder,
+const FRadios = ({
+	label,
 	name,
 	autoFocus = false,
 	size = undefined,
+	options,
+	orientation = "vertical",
 	hideLabel = false
 }: FTextProps) => {
 	const { control } = useFormContext()
@@ -31,18 +34,19 @@ const FText = ({
 
 	// nextui
 	return (
-		<Input
-			size={size}
-			autoFocus={autoFocus}
+		<RadioGroup
 			label={hideLabel ? undefined : label}
-			labelPlacement={"outside"}
-			placeholder={placeholder}
-			width="100%"
-			{...field}
-			variant="bordered"
-			errorMessage={error?.message}
-		/>
+			value={field.value}
+			onValueChange={field.onChange}
+			orientation={orientation}
+		>
+			{options.map((option) => (
+				<Radio key={option.value} value={option.value}>
+					{option.label}
+				</Radio>
+			))}
+		</RadioGroup>
 	)
 }
 
-export default FText
+export default FRadios

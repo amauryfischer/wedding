@@ -1,4 +1,4 @@
-import { Input } from "@nextui-org/react"
+import { Input, Textarea } from "@nextui-org/react"
 import { useFormContext, useController } from "react-hook-form"
 
 interface FTextProps {
@@ -10,7 +10,7 @@ interface FTextProps {
 	hideLabel?: boolean
 }
 
-const FText = ({
+const FTextarea = ({
 	label = undefined,
 	placeholder,
 	name,
@@ -31,7 +31,7 @@ const FText = ({
 
 	// nextui
 	return (
-		<Input
+		<Textarea
 			size={size}
 			autoFocus={autoFocus}
 			label={hideLabel ? undefined : label}
@@ -45,4 +45,4 @@ const FText = ({
 	)
 }
 
-export default FText
+export default FTextarea
