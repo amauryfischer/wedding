@@ -1,4 +1,4 @@
-import FFieldArray from "@/ui/molecules/forms/FFieldArray"
+import FFieldArrayPeople from "@/ui/molecules/forms/FFieldArrayPeople"
 import FText from "@/ui/molecules/forms/FText"
 import { Spacer } from "@nextui-org/react"
 import { useState } from "react"
@@ -15,7 +15,7 @@ export default function RsvpStep4() {
 		<div>
 			<div className="font-bold text-2xl">Personnes supplémentaires</div>
 			<Spacer y={4} />
-			<FFieldArray name="guests" />
+			<FFieldArrayPeople name="guests" />
 		</div>
 	)
 }

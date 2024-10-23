@@ -5,8 +5,28 @@ import { regimes } from "@/app/rsvp/regimes"
 import intolerances from "@/app/rsvp/intolerances"
 import FTextarea from "./FTextarea"
 import { Button } from "@nextui-org/react"
+import styled from "styled-components"
+import { PlusCircle } from "@phosphor-icons/react"
+const AddPeople = styled.div`
+	border: 1px solid var(--grey200);
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	border-radius: var(--nextui-radius-lg);
+	padding: 1rem;
+	width: 100%;
+	cursor: pointer;
+	transition: background-color 0.3s ease;
+	&:hover {
+		background-color: var(--primary50);
+	}
+`
 
-const FFieldArray = ({
+const SPlusCircle = styled(PlusCircle)`
+	color: var(--primary);
+`
+
+const FFieldArrayPeople = ({
 	name
 }: {
 	name: string
@@ -60,17 +80,20 @@ const FFieldArray = ({
 					</div>
 				</div>
 			))}
-			<div
-				className="border-1 border-default-200 rounded-lg p-6 hover:cursor-pointer hover:bg-default-100 transition-colors cursor-pointer"
+			<AddPeople
+				className="border-1 border-primary-200 rounded-lg p-6 hover:cursor-pointer hover:bg-primary-100 transition-colors cursor-pointer"
 				onClick={() => append({})}
 				onKeyUp={(e) =>
 					e.key === "Enter" && append({ firstname: "", lastname: "" })
 				}
 			>
-				<div>Ajouter une autre personne</div>
-			</div>
+				<div className="flex items-center gap-2">
+					<SPlusCircle size={24} />
+					Ajouter une autre personne
+				</div>
+			</AddPeople>
 		</div>
 	)
 }
 
-export default FFieldArray
+export default FFieldArrayPeople
