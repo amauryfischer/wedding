@@ -18,6 +18,7 @@ interface FSelectProps {
 	options: { label: string; value: string; section: string }[]
 	size?: "xs" | "sm" | "md" | "lg" | "xl"
 	variant?: "bordered" | "flat" | "faded" | "underlined"
+	renderValue?: (value: string) => string
 }
 
 const FSelectSection = ({
@@ -26,7 +27,8 @@ const FSelectSection = ({
 	name,
 	options,
 	size = undefined,
-	variant = undefined
+	variant = undefined,
+	renderValue
 }: FSelectProps) => {
 	const { control } = useFormContext()
 	const {
@@ -38,7 +40,12 @@ const FSelectSection = ({
 		control
 	})
 	return (
-		<Select variant={variant} {...field} label={label}>
+		<Select
+			variant={variant}
+			{...field}
+			label={label}
+			renderValue={renderValue}
+		>
 			{_.uniqBy(options, "section").map((option) => (
 				<SelectSection key={option.section} title={option.section}>
 					{options

@@ -26,7 +26,7 @@ export default function RsvpStep3() {
 			<FSelect
 				variant="bordered"
 				label="Intolérance ou allergies"
-				name="diet"
+				name="intolerances"
 				options={intolerances}
 			/>
 			<FTextarea label="Précisions utiles" name="other" />

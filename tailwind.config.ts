@@ -15,7 +15,7 @@ const config: Config = {
 				foreground: "var(--foreground)"
 			},
 			fontFamily: {
-				quantico: ["var(--font-quantico)"]
+				manrope: ["var(--font-manrope)"]
 			}
 		}
 	},

@@ -4,11 +4,14 @@ import FFieldArray from "@/ui/molecules/forms/FFieldArrayPeople"
 import FRadios from "@/ui/molecules/forms/Fradios"
 import FText from "@/ui/molecules/forms/FText"
 import { Spacer } from "@nextui-org/react"
+import { Hebergement } from "@prisma/client"
 import { useState } from "react"
 import { useFormContext, useWatch } from "react-hook-form"
 import styled from "styled-components"
 
-export default function RsvpStep5() {
+export default function RsvpStep5({
+	hebergements
+}: { hebergements: Hebergement[] }) {
 	const { control } = useFormContext()
 	const hebergement = useWatch({
 		control,
@@ -34,7 +37,10 @@ export default function RsvpStep5() {
 			</div>
 			<Spacer y={4} />
 			{hebergement === "oui" && (
-				<FFieldArrayHebergement name="hebergement_details" />
+				<FFieldArrayHebergement
+					name="hebergement_details"
+					hebergements={hebergements}
+				/>
 			)}
 		</div>
 	)

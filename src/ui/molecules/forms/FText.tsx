@@ -30,8 +30,13 @@ const FText = ({
 	})
 
 	// nextui
+	if (error) {
+		console.warn(error)
+	}
 	return (
 		<Input
+			errorMessage={error?.message}
+			isInvalid={invalid}
 			size={size}
 			autoFocus={autoFocus}
 			label={hideLabel ? undefined : label}
@@ -40,7 +45,6 @@ const FText = ({
 			width="100%"
 			{...field}
 			variant="bordered"
-			errorMessage={error?.message}
 		/>
 	)
 }

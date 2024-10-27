@@ -13,14 +13,101 @@ import PaymentForm from "../checkout/PaymentForm"
 import { CalendarBlank } from "@phosphor-icons/react"
 import styled from "styled-components"
 import RsvpStep5 from "./RsvpStep5"
+import { Hebergement } from "@prisma/client"
+import { yupResolver } from "@hookform/resolvers/yup"
+import * as yup from "yup"
+import formatNfdLowerCase from "@/utils/formatNfdLowerCase"
+import easterEgg from "./easterEgg"
+import { saveGuest } from "../../../server/saveGuest"
+import { useRouter } from "next/navigation"
 
 const SCalendarBlank = styled(CalendarBlank)`
 	color: var(--primary);
 `
 
-const Rsvp = () => {
-	const methods = useForm()
-	const [step, setStep] = useState(4)
+const Rsvp = ({
+	hebergements,
+	allGuests
+}: { hebergements: Hebergement[]; allGuests: any }) => {
+	const [step, setStep] = useState(0)
+	const router = useRouter()
+	const schemas = [
+		yup.object({
+			firstName: yup.string().required("Le prénom est requis"),
+			lastName: yup.string().required("Le nom est requis"),
+			email: yup
+				.string()
+				.email("L'email est invalide")
+				.required("L'email est requis")
+		}),
+		yup.object({
+			eglise: yup
+				.string()
+				.required("La confirmation de la cérémonie est requise"),
+			cocktail: yup
+				.string()
+				.required("La confirmation du cocktail est requise"),
+			diner: yup.string().required("La confirmation du dîner est requise"),
+			brunch: yup.string().required("La confirmation du brunch est requise")
+		}),
+		yup.object({}),
+		yup.object({}),
+		yup.object({})
+	]
+	const currentSchema = schemas[step]
+	const [currentGuest, setCurrentGuest] = useState<any>(undefined)
+	const methods = useForm({
+		resolver: yupResolver(currentSchema),
+		defaultValues: {
+			hebergement_details: [],
+			guests: []
+		}
+	})
+	const onSubmit = (data: any) => {
+		const allGuestOnlyCocktail =
+			currentGuest?.Cocktail?.includes("Oui") &&
+			currentGuest?.Dîner?.includes("Non") &&
+			currentGuest?.Brunch?.includes("Non")
+		if (step === 4 || (step === 3 && allGuestOnlyCocktail)) {
+			saveGuest(data)
+			alert("Merci pour votre réponse !")
+			router.push("/gift")
+			return
+		}
+		if (step === 0) {
+			const currentGuestName = `${formatNfdLowerCase(data.firstName)} ${formatNfdLowerCase(data.lastName)}`
+			const guest = allGuests.find(
+				(guest: any) => formatNfdLowerCase(guest.Nom) === currentGuestName
+			)
+			if (guest) {
+				setCurrentGuest(guest)
+				if (guest?.Cocktail?.includes("Non")) {
+					methods.setValue("cocktail", "non")
+				}
+				if (guest?.Dîner?.includes("Non")) {
+					methods.setValue("diner", "non")
+				}
+				if (guest?.Brunch?.includes("Non")) {
+					methods.setValue("brunch", "non")
+				}
+				if (
+					guest?.Cocktail?.includes("Non") &&
+					guest?.Dîner?.includes("Non") &&
+					guest?.Brunch?.includes("Non")
+				) {
+					setStep(3)
+				}
+				easterEgg({ methods, guest })
+			} else {
+				alert(
+					"Un problème est survenue veuillez nous joindre au 07 69 99 77 85"
+				)
+				return
+			}
+		}
+		setStep(step + 1)
+	}
+
 	return (
 		<FormProvider {...methods}>
 			<div className="flex h-full w-full">
@@ -51,32 +138,27 @@ const Rsvp = () => {
 					</div>
 					<Spacer y={2} />
 					{step === 0 && <RsvpStep1 />}
-					{step === 1 && <RsvpStep2 />}
+					{step === 1 && <RsvpStep2 guest={currentGuest} />}
 					{step === 2 && <RsvpStep3 />}
 					{step === 3 && <RsvpStep4 />}
-					{step === 4 && <RsvpStep5 />}
+					{step === 4 && <RsvpStep5 hebergements={hebergements} />}
 					<Spacer y={4} />
 					<div className="flex justify-between">
 						<div className="flex gap-2">
 							<div
-								onClick={() => setStep(0)}
-								className={`w-12 h-4 transition-colors duration-300 ${step === 0 ? "bg-primary" : "bg-slate-200"} hover:cursor-pointer hover:bg-primary`}
+								className={`w-12 h-4 transition-colors duration-300 ${step === 0 ? "bg-primary" : "bg-slate-200"} hover:bg-primary`}
 							/>
 							<div
-								onClick={() => setStep(1)}
-								className={`w-12 h-4 transition-colors duration-300 ${step === 1 ? "bg-primary" : "bg-slate-200"} hover:cursor-pointer hover:bg-primary`}
+								className={`w-12 h-4 transition-colors duration-300 ${step === 1 ? "bg-primary" : "bg-slate-200"} hover:bg-primary`}
 							/>
 							<div
-								onClick={() => setStep(2)}
-								className={`w-12 h-4 transition-colors duration-300 ${step === 2 ? "bg-primary" : "bg-slate-200"} hover:cursor-pointer hover:bg-primary`}
+								className={`w-12 h-4 transition-colors duration-300 ${step === 2 ? "bg-primary" : "bg-slate-200"} hover:bg-primary`}
 							/>
 							<div
-								onClick={() => setStep(3)}
-								className={`w-12 h-4 transition-colors duration-300 ${step === 3 ? "bg-primary" : "bg-slate-200"} hover:cursor-pointer hover:bg-primary`}
+								className={`w-12 h-4 transition-colors duration-300 ${step === 3 ? "bg-primary" : "bg-slate-200"} hover:bg-primary`}
 							/>
 							<div
-								onClick={() => setStep(4)}
-								className={`w-12 h-4 transition-colors duration-300 ${step === 4 ? "bg-primary" : "bg-slate-200"} hover:cursor-pointer hover:bg-primary`}
+								className={`w-12 h-4 transition-colors duration-300 ${step === 4 ? "bg-primary" : "bg-slate-200"} hover:bg-primary`}
 							/>
 						</div>
 						<div className="flex gap-2">
@@ -90,14 +172,25 @@ const Rsvp = () => {
 									Précedent
 								</Button>
 							)}
-							<Button
-								className="w-fit"
-								color="primary"
-								size="lg"
-								onClick={() => setStep(step + 1)}
-							>
-								Continuer
-							</Button>
+							{step < 4 && (
+								<Button
+									className="w-fit"
+									color="primary"
+									size="lg"
+									onClick={methods.handleSubmit(onSubmit)}
+								>
+									Continuer
+								</Button>
+							)}
+							{step === 4 && (
+								<Button
+									className="w-fit"
+									onClick={methods.handleSubmit(onSubmit)}
+									size="lg"
+								>
+									Finaliser
+								</Button>
+							)}
 						</div>
 					</div>
 				</div>

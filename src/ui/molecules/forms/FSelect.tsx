@@ -28,7 +28,7 @@ const FSelect = ({
 }: FSelectProps) => {
 	const { control } = useFormContext()
 	const {
-		field,
+		field: { onChange, value, ...field },
 		fieldState: { invalid, isTouched, isDirty, error },
 		formState: { touchedFields, dirtyFields }
 	} = useController({
@@ -36,7 +36,14 @@ const FSelect = ({
 		control
 	})
 	return (
-		<Select variant={variant} {...field} selectionMode="multiple" label={label}>
+		<Select
+			variant={variant}
+			{...field}
+			selectionMode="multiple"
+			label={label}
+			selectedKeys={value}
+			onSelectionChange={onChange}
+		>
 			{options.map((option) => (
 				<SelectItem key={option.value} value={option.value}>
 					{option.label}

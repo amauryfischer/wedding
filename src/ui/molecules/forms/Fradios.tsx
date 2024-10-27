@@ -39,6 +39,8 @@ const FRadios = ({
 			value={field.value}
 			onValueChange={field.onChange}
 			orientation={orientation}
+			isInvalid={invalid}
+			errorMessage={error?.message}
 		>
 			{options.map((option) => (
 				<Radio key={option.value} value={option.value}>

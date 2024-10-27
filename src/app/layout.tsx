@@ -5,13 +5,13 @@ import type { Metadata } from "next"
 import { Providers } from "./_Providers/Providers"
 import "./globals.css"
 import { ChildrenContainer } from "./baseCss"
-import { Quantico } from "next/font/google"
+import { Manrope } from "next/font/google"
 
 // If loading a variable font, you don't need to specify the font weight
-const quantico = Quantico({
+const manrope = Manrope({
 	weight: ["400", "700"],
 	display: "swap",
-	variable: "--font-quantico",
+	variable: "--font-manrope",
 	adjustFontFallback: false,
 	subsets: ["latin"]
 })
@@ -27,7 +27,7 @@ export default async function RootLayout({
 	children: React.ReactNode
 }>) {
 	return (
-		<html lang="fr" className={quantico.variable}>
+		<html lang="fr" className={manrope.variable}>
 			<body>
 				<Providers>
 					<GlobalStyle />

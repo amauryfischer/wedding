@@ -1,12 +1,8 @@
-import { useFieldArray, useFormContext } from "react-hook-form"
-import FText from "./FText"
-import FSelect from "./FSelect"
-import { regimes } from "@/app/rsvp/regimes"
-import intolerances from "@/app/rsvp/intolerances"
-import FTextarea from "./FTextarea"
 import { Button, Spacer } from "@nextui-org/react"
-import styled from "styled-components"
 import { PlusCircle } from "@phosphor-icons/react"
+import { Hebergement } from "@prisma/client"
+import { useFieldArray, useFormContext, useWatch } from "react-hook-form"
+import styled from "styled-components"
 import FSelectSection from "./FSelectSection"
 const AddPeople = styled.div`
 	border: 1px solid var(--grey200);
@@ -28,9 +24,11 @@ const SPlusCircle = styled(PlusCircle)`
 `
 
 const FFieldArrayHebergement = ({
-	name
+	name,
+	hebergements
 }: {
 	name: string
+	hebergements: Hebergement[]
 }) => {
 	const { control } = useFormContext()
 	const { fields, append, prepend, remove, swap, move, insert } = useFieldArray(
@@ -39,53 +37,18 @@ const FFieldArrayHebergement = ({
 			name
 		}
 	)
-	const hebergements = [
-		{
-			value: "chateau_1",
-			label: "Château - Chambre 1 Lit double 160cm (100€)",
-			section: "Château"
-		},
-		{
-			value: "chateau_2",
-			label: "Château - Chambre 1 Lit double 150cm (100€)",
-			section: "Château"
-		},
-		{
-			value: "chateau_3",
-			label:
-				"Château - Chambre 2 Lits simples 100cm ou 1 Lit double 200cm (100€)",
-			section: "Château"
-		},
-		{
-			value: "hotel_1",
-			label: "Hôtel – Chambre 1 Lit double 160 cm (75€)",
-			section: "Hôtel au dessus de la salle de réception"
-		},
-		{
-			value: "hotel_2",
-			label:
-				"Hôtel – Chambre 2 Lits simples 80 cm ou 1 Lit double 160 cm (75€)",
-			section: "Hôtel au dessus de la salle de réception"
-		},
-		{
-			value: "hotel_3",
-			label:
-				"Hôtel – Chambre 2 Lits simples 90 cm ou 1 Lit double 180 cm (75€)",
-			section: "Hôtel au dessus de la salle de réception"
-		},
-		{
-			value: "gite_1",
-			label: "Gîte - Chambre 1 Lit double 140 cm + 1 BZ (70€)",
-			section: "Gîte de 1 à 4 personnes"
-		},
-		{
-			value: "bungalow_1",
-			label:
-				"Bungalow – 2 x Chambres avec 2 Lits simples 80 cm ou 1 Lit double 160 cm (70€)",
-			section: "Bungalow de 1 à 4 personnes"
+	const currentHebergements = useWatch({
+		control,
+		name
+	})
+	const currentHebergementQuantityByType: Record<string, number> = {}
+	Object.entries(currentHebergements ?? {}).forEach(([key, value]) => {
+		if (!currentHebergementQuantityByType[value.type]) {
+			currentHebergementQuantityByType[value.type] = 0
 		}
-	]
-
+		currentHebergementQuantityByType[value.type] =
+			currentHebergementQuantityByType[value.type] + 1
+	})
 	return (
 		<div className="flex flex-col gap-4">
 			{fields.map((field, index) => (
@@ -109,7 +72,25 @@ const FFieldArrayHebergement = ({
 							variant="bordered"
 							label="Séléctionnez un type d'hébergement"
 							name={`${name}.${index}.type`}
-							options={hebergements}
+							options={hebergements.map((hebergement) => {
+								const remainingQuantity = hebergement.quantity - (currentHebergementQuantityByType[hebergement.value] || 0);
+								return {
+									label: `${hebergement.description} ${remainingQuantity} places restantes`,
+									value: hebergement.value,
+									section: hebergement.value
+								};
+							})}
+							renderValue={(value: Set<string>) => {
+								
+								return (
+									<>
+										{value.map((v) =>
+											hebergements.find((h) => h.value === v.key)
+												?.description
+										).join(", ")}
+									</>
+								)
+							}}
 						/>
 					</div>
 				</div>

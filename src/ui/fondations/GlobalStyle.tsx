@@ -36,7 +36,7 @@ const GlobalStyle = createGlobalStyle`
             outline: none;
         }
         box-sizing: border-box !important;
-        font-family: var(--font-quantico);
+        font-family: var(--font-manrope);
     }
     body {  
         height: calc(100vh - var(--topbar-height));
