@@ -35,13 +35,6 @@ export default function RsvpStep5({
 					]}
 				/>
 			</div>
-			<Spacer y={4} />
-			{hebergement === "oui" && (
-				<FFieldArrayHebergement
-					name="hebergement_details"
-					hebergements={hebergements}
-				/>
-			)}
 		</div>
 	)
 }

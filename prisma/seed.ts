@@ -1,4 +1,5 @@
 import { PrismaClient } from "@prisma/client"
+import { Coda } from "coda-js"
 const prisma = new PrismaClient()
 async function main() {
 	const chateau1 = await prisma.hebergement.create({

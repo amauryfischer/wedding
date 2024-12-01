@@ -14,10 +14,8 @@ import styled from "styled-components"
 import { CalendarBlank, Check } from "@phosphor-icons/react"
 import axios from "axios"
 import { useState } from "react"
+import { Payment, Product } from "@prisma/client"
 
-const SCalendarBlank = styled(CalendarBlank)`
-	color: var(--primary);
-`
 const SContribution = styled.div`
 	background-color: var(--primary50);
 `
@@ -25,7 +23,13 @@ const SCheck = styled(Check)`
 	color: var(--success);
 	font-size: 1.2rem;
 `
-export default function Gift() {
+export default function Gift({
+	products,
+	payments
+}: {
+	products: Product[]
+	payments: Payment[]
+}) {
 	const [amount, setAmount] = useState(0)
 	const offer = async () => {
 		try {
@@ -40,26 +44,13 @@ export default function Gift() {
 			console.log(error)
 		}
 	}
-	const gifts = [
-		{
-			img: "https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcRvoKbczxoIZ8fNKlzOA17S2rESmbYgGYor1I9Me0Jz4qxp30N7ajSS43adPgvf88Fw9cuXweMggM6VIspO1Bugt9pKguNe0NzSmHGdTjqFTI88K0p_amdaRw",
-			title: "Machine a café",
-			price: 200,
-			financed: 100
-		},
-		{
-			img: "https://cf.bstatic.com/xdata/images/hotel/max1024x768/35152294.jpg?k=763f33b8765549f8c315056dd3aa07f09ae2b76e4af2c2d5bdb52a10c7f88d10&o=&hp=1",
-			title: "Golden Seoul Hôtel",
-			price: 96,
-			financed: 0
-		},
-		{
-			img: "https://cache.marriott.com/content/dam/marriott-renditions/SELER/seler-suite-0047-hor-wide.jpg?output-quality=70&interpolation=progressive-bilinear&downsize=*:339",
-			title: "Suite de luxe",
-			price: 310,
-			financed: 310
-		}
-	]
+	const financed = (product: Product) => {
+		return payments
+			.filter((payment) => payment.productId === product.id)
+			.map((payment) => payment.amount)
+			.reduce((acc, curr) => acc + curr, 0)
+	}
+
 	return (
 		<div className="flex flex-col p-12 gap-8">
 			<div className="flex gap-16">
@@ -106,40 +97,48 @@ export default function Gift() {
 			<div className="text-2xl font-bold">🎁 Liste de cadeaux</div>
 			<Tabs color="primary" variant="solid" radius="lg">
 				<Tab key="gift" title="Cadeaux">
-					<div className="flex flex-nowrap gap-4">
-						{gifts.map((gift) => (
-							<div key={gift.title} className="flex flex-col gap-4">
+					<div className="flex flex-wrap gap-16 justify-center">
+						{products.map((product) => (
+							<div
+								key={product.description}
+								className="flex flex-col gap-4 max-w-64"
+							>
 								<div className="flex flex-col gap-0">
 									<Image
-										src={gift.img}
-										alt={gift.title}
-										className="h-48 w-48 object-cover rounded-md"
+										src={product.imageUrl}
+										alt={product.description}
+										className="h-64 w-64 object-cover rounded-md"
 									/>
 									<Progress
-										value={gift.financed}
-										maxValue={gift.price}
+										value={financed(product)}
+										maxValue={Number(product.prix)}
 										className="w-full h-2"
 									/>
 								</div>
 								<div className="flex flex-col gap-2">
 									<div className="flex items-center gap-2">
-										{gift.financed > 0 && (
+										{Number(product.prix) > 0 && (
 											<>
-												<div className="text-sm">{gift.financed}€</div>
+												<div className="text-sm">{financed(product)}€</div>
 												<div>/</div>
 											</>
 										)}
-										<div className="font-bold">{gift.price}€</div>
+										<div className="font-bold">{product.prix}€</div>
 									</div>
-									<div>{gift.title}</div>
+									<div
+										className="text-xs min-h-13 h-13"
+										style={{ height: "3.25rem" }}
+									>
+										{product.description}
+									</div>
 								</div>
 								<div className="flex flex-col gap-2">
-									{gift.financed === 0 && (
+									{financed(product) === 0 && (
 										<Button color="primary">Offrir</Button>
 									)}
-									{gift.financed < gift.price && (
-										<div className="flex">
-											<ButtonGroup>
+									{financed(product) < Number(product.prix) && (
+										<div className="flex w-full gap-2">
+											<ButtonGroup className="w-full">
 												<Input
 													type="number"
 													placeholder="0"
@@ -152,13 +151,14 @@ export default function Gift() {
 													color="primary"
 													onPress={offer}
 													variant="bordered"
+													className="w-full"
 												>
 													Participer
 												</Button>
 											</ButtonGroup>
 										</div>
 									)}
-									{gift.financed >= gift.price && (
+									{financed(product) >= Number(product.prix) && (
 										<Button variant="bordered">
 											Réservé ! <SCheck />
 										</Button>

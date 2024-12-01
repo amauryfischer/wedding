@@ -1,4 +1,5 @@
 export const regimes = [
+	{ label: "Je mange de tout", value: "aucun" },
 	{ label: "Végétarien", value: "vegetarien" },
 	{ label: "Végétalien", value: "vegetalien" },
 	{ label: "Fruitivore", value: "fruitivore" },

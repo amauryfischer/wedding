@@ -1,4 +1,5 @@
 const intolerances = [
+	{ label: "Aucune", value: "aucune" },
 	{ label: "Gluten", value: "gluten" },
 	{ label: "Lactose", value: "lactose" },
 	{ label: "Noix", value: "noix" },

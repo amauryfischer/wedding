@@ -57,3 +57,19 @@ model Hebergement {
   price String
   quantity Int
 }
+
+model Product {
+  id String @id @default(uuid())
+  description String
+  imageUrl String
+  prix Float
+  url String
+  categorie String?
+}
+
+model Payment {
+  id String @id @default(uuid())
+  from String
+  productId String
+  amount Int
+}
