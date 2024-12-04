@@ -36,20 +36,23 @@ const FSelect = ({
 		control
 	})
 	return (
-		<Select
-			variant={variant}
-			{...field}
-			selectionMode="multiple"
-			label={label}
-			selectedKeys={value}
-			onSelectionChange={onChange}
-		>
-			{options.map((option) => (
-				<SelectItem key={option.value} value={option.value}>
-					{option.label}
-				</SelectItem>
-			))}
-		</Select>
+		<>
+			value : {value.toString()}
+			<Select
+				variant={variant}
+				{...field}
+				selectionMode="multiple"
+				label={label}
+				selectedKeys={new Set(value || [])}
+				onSelectionChange={(e) => onChange(Array.from(e))}
+			>
+				{options.map((option) => (
+					<SelectItem key={option.value} value={option.value}>
+						{option.label}
+					</SelectItem>
+				))}
+			</Select>
+		</>
 	)
 }
 

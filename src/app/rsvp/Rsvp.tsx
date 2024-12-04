@@ -50,7 +50,11 @@ const Rsvp = ({
 			diner: yup.string().required("La confirmation du dîner est requise"),
 			brunch: yup.string().required("La confirmation du brunch est requise")
 		}),
-		yup.object({}),
+		yup.object({
+			diet: yup.array().of(yup.string()).optional().default([]),
+			intolerances: yup.array().of(yup.string()).optional().default([]),
+			other: yup.string().optional()
+		}),
 		yup.object({}),
 		yup.object({})
 	]

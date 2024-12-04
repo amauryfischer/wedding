@@ -6,6 +6,7 @@ import { useState } from "react"
 import styled from "styled-components"
 import { regimes } from "./regimes"
 import intolerances from "./intolerances"
+import { useFormContext, useWatch } from "react-hook-form"
 
 const Callout = styled.div`
 	background-color: var(--caramel50);
@@ -14,8 +15,12 @@ const Callout = styled.div`
 `
 
 export default function RsvpStep3() {
+	const { control } = useFormContext()
+	const values = useWatch({ control })
+
 	return (
 		<div className="flex flex-col gap-4">
+			{JSON.stringify(values, null, 2)}
 			<div className="font-bold text-2xl">Régime alimentaire</div>
 			<FSelect
 				variant="bordered"
