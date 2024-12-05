@@ -31,10 +31,10 @@ export default function Gift({
 	payments: Payment[]
 }) {
 	const [amount, setAmount] = useState(0)
-	const offer = async () => {
+	const offer = async (product?: Product) => {
 		try {
 			const { data } = await axios.post("/api/checkout_sessions", {
-				data: { amount: amount }
+				data: { amount: amount, productId: product?.id }
 			})
 			const sessionUrl = data
 
@@ -50,6 +50,7 @@ export default function Gift({
 			.map((payment) => payment.amount)
 			.reduce((acc, curr) => acc + curr, 0)
 	}
+	console.log("payments", payments)
 
 	return (
 		<div className="flex flex-col p-12 gap-8">
@@ -89,7 +90,7 @@ export default function Gift({
 						value={amount?.toString()}
 						onChange={(e) => setAmount(Number(e.target.value))}
 					/>
-					<Button color="primary" onPress={offer}>
+					<Button color="primary" onPress={() => offer()}>
 						Offrir
 					</Button>
 				</ButtonGroup>
@@ -134,7 +135,15 @@ export default function Gift({
 								</div>
 								<div className="flex flex-col gap-2">
 									{financed(product) === 0 && (
-										<Button color="primary">Offrir</Button>
+										<Button
+											color="primary"
+											onPress={() => {
+												setAmount(product.prix)
+												offer(product)
+											}}
+										>
+											Offrir
+										</Button>
 									)}
 									{financed(product) < Number(product.prix) && (
 										<div className="flex w-full gap-2">
@@ -149,7 +158,7 @@ export default function Gift({
 												/>
 												<Button
 													color="primary"
-													onPress={offer}
+													onPress={() => offer(product)}
 													variant="bordered"
 													className="w-full"
 												>

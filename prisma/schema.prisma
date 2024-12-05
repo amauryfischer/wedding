@@ -64,6 +64,7 @@ model Product {
   imageUrl String
   prix Float
   url String
+  externalId String
   categorie String?
 }
 

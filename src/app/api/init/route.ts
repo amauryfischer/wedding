@@ -11,7 +11,8 @@ export async function GET() {
 		"c-i5iYfWO1uM", // image
 		"c-cMZHpplwjB", // description
 		"c-ZOwNWx3ewP", // prix
-		"c-tKFV2rH44d" // url
+		"c-tKFV2rH44d", // url
+		"c-0FlSpH3xTQ" // extern id
 	]
 	const tables = await Promise.all(
 		tableIds.map(async (tableId) => {
@@ -51,7 +52,8 @@ export async function GET() {
 				description: value.description,
 				imageUrl: value.imageUrl,
 				prix: Number(prix),
-				url: value.url
+				url: value.url,
+				externalId: value.id?.toString() ?? ""
 			}
 		})
 	})
