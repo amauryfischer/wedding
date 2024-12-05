@@ -23,7 +23,7 @@
     "@lottiefiles/react-lottie-player": "^3.5.4",
     "@mui/icons-material": "^5.15.19",
     "@mui/material": "^6.1.2",
-    "@nextui-org/react": "^2.4.6",
+    "@nextui-org/react": "2.4.8",
     "@phosphor-icons/react": "^2.1.7",
     "@prisma/adapter-pg": "^5.19.1",
     "@prisma/client": "^5.19.1",
