@@ -119,13 +119,13 @@ const Rsvp = ({
 					src="/images/maries.jpg"
 					alt="rsvp"
 					width={window.innerWidth / 2}
-					className="h-full object-cover"
+					className="h-full object-cover hidden md:block"
 					classNames={{
 						wrapper: "rounded-none",
 						img: "rounded-none"
 					}}
 				/>
-				<div className="flex flex-col gap-4 p-12">
+				<div className="flex flex-col gap-4 p-4 lg:p-12">
 					<div className="flex items-center gap-2">
 						<SCalendarBlank size={24} />
 						Evénement prévu le samedi 7 juin 2025
@@ -147,7 +147,7 @@ const Rsvp = ({
 					{step === 3 && <RsvpStep4 />}
 					{step === 4 && <RsvpStep5 hebergements={hebergements} />}
 					<Spacer y={4} />
-					<div className="flex justify-between">
+					<div className="flex justify-between flex-col md:flex-row gap-4">
 						<div className="flex gap-2">
 							<div
 								className={`w-12 h-4 transition-colors duration-300 ${step === 0 ? "bg-primary" : "bg-slate-200"} hover:bg-primary`}

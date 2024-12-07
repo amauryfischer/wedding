@@ -52,16 +52,16 @@ export default function Gift({
 	}
 
 	return (
-		<div className="flex flex-col p-12 gap-8">
-			<div className="flex gap-16">
+		<div className="flex flex-col p-4 gap-8 lg:p-12">
+			<div className="flex gap-2 flex-col md:flex-row md:gap-16">
 				<Image
 					src="/images/maries.jpg"
 					alt="rsvp"
-					className="h-48 w-48 object-cover rounded-md"
+					className="md:h-48 md:w-48 object-cover rounded-md w-full md:block hidden"
 				/>
 				<div className="flex flex-col gap-4">
 					<Spacer y={4} />
-					<div className="text-6xl font-bold">
+					<div className="md:text-6xl text-4xl font-bold">
 						Mariage <span className="text-primary">Linh-Dan & Amaury</span>
 					</div>
 					<div className="max-w-2xl">
