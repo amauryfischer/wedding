@@ -41,8 +41,8 @@ model Guest {
   cocktail String
   diner String
   brunch String
-  diet String?
-  intolerances String?
+  diet String[]
+  intolerances String[]
   other String?
   guests Json[]
   hebergement String?
@@ -64,6 +64,7 @@ model Product {
   imageUrl String
   prix Float
   url String
+  externalId String
   categorie String?
 }
 

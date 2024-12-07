@@ -20,7 +20,6 @@ export default function RsvpStep3() {
 
 	return (
 		<div className="flex flex-col gap-4">
-			{JSON.stringify(values, null, 2)}
 			<div className="font-bold text-2xl">Régime alimentaire</div>
 			<FSelect
 				variant="bordered"

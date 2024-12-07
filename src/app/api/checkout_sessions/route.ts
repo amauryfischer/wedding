@@ -9,6 +9,7 @@ const stripe = new Stripe(process.env.STRIPE_SECRET_TEST_KEY!, {
 export async function POST(req: NextRequest) {
 	const { data } = await req.json()
 	const { amount, productId } = data
+	console.log("received")
 	try {
 		const session = await stripe.checkout.sessions.create({
 			payment_method_types: ["card"],

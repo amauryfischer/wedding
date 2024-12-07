@@ -37,7 +37,6 @@ const FSelect = ({
 	})
 	return (
 		<>
-			value : {value.toString()}
 			<Select
 				variant={variant}
 				{...field}
