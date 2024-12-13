@@ -73,7 +73,7 @@ export default function Gift({
 					</div>
 				</div>
 			</div>
-			<SContribution className="rounded-md p-4 flex justify-between w-full">
+			<SContribution className="rounded-md p-4 flex justify-between w-full flex-col gap-8 sm:flex-row sm:gap-2">
 				<div className="flex flex-col gap-2">
 					<div className="text-2xl font-bold">Contribution libre</div>
 					<div className="max-w-lg text-sm">
