@@ -15,14 +15,12 @@ import { CalendarBlank, Check } from "@phosphor-icons/react"
 import axios from "axios"
 import { useState } from "react"
 import { Payment, Product } from "@prisma/client"
+import ProductPrice from "./ProductPrice"
 
 const SContribution = styled.div`
 	background-color: var(--primary50);
 `
-const SCheck = styled(Check)`
-	color: var(--success);
-	font-size: 1.2rem;
-`
+
 export default function Gift({
 	products,
 	payments
@@ -31,10 +29,13 @@ export default function Gift({
 	payments: Payment[]
 }) {
 	const [amount, setAmount] = useState(0)
-	const offer = async (product?: Product) => {
+	const offer = async ({
+		euros,
+		product
+	}: { product?: Product; euros: number }) => {
 		try {
 			const { data } = await axios.post("/api/checkout_sessions", {
-				data: { amount: amount, productId: product?.id }
+				data: { amount: euros, productId: product?.id }
 			})
 			const sessionUrl = data
 
@@ -44,12 +45,7 @@ export default function Gift({
 			console.log(error)
 		}
 	}
-	const financed = (product: Product) => {
-		return payments
-			.filter((payment) => payment.productId === product.id)
-			.map((payment) => payment.amount)
-			.reduce((acc, curr) => acc + curr, 0)
-	}
+
 	console.log("payments", payments)
 
 	return (
@@ -90,7 +86,7 @@ export default function Gift({
 						value={amount?.toString()}
 						onChange={(e) => setAmount(Number(e.target.value))}
 					/>
-					<Button color="primary" onPress={() => offer()}>
+					<Button color="primary" onPress={() => offer({ euros: amount })}>
 						Offrir
 					</Button>
 				</ButtonGroup>
@@ -100,80 +96,12 @@ export default function Gift({
 				<Tab key="gift" title="Cadeaux">
 					<div className="flex flex-wrap gap-16 justify-center">
 						{products.map((product) => (
-							<div
+							<ProductPrice
 								key={product.description}
-								className="flex flex-col gap-4 max-w-64"
-							>
-								<div className="flex flex-col gap-0">
-									<Image
-										src={product.imageUrl}
-										alt={product.description}
-										className="h-64 w-64 object-cover rounded-md"
-									/>
-									<Progress
-										value={financed(product)}
-										maxValue={Number(product.prix)}
-										className="w-full h-2"
-									/>
-								</div>
-								<div className="flex flex-col gap-2">
-									<div className="flex items-center gap-2">
-										{Number(product.prix) > 0 && (
-											<>
-												<div className="text-sm">{financed(product)}€</div>
-												<div>/</div>
-											</>
-										)}
-										<div className="font-bold">{product.prix}€</div>
-									</div>
-									<div
-										className="text-xs min-h-13 h-13"
-										style={{ height: "3.25rem" }}
-									>
-										{product.description}
-									</div>
-								</div>
-								<div className="flex flex-col gap-2">
-									{financed(product) === 0 && (
-										<Button
-											color="primary"
-											onPress={() => {
-												setAmount(product.prix)
-												offer(product)
-											}}
-										>
-											Offrir
-										</Button>
-									)}
-									{financed(product) < Number(product.prix) && (
-										<div className="flex w-full gap-2">
-											<ButtonGroup className="w-full">
-												<Input
-													type="number"
-													placeholder="0"
-													endContent={<div>€</div>}
-													className="max-w-24"
-													value={amount?.toString()}
-													onChange={(e) => setAmount(Number(e.target.value))}
-												/>
-												<Button
-													color="primary"
-													onPress={() => offer(product)}
-													variant="bordered"
-													className="w-full"
-												>
-													Participer
-												</Button>
-											</ButtonGroup>
-										</div>
-									)}
-									{financed(product) >= Number(product.prix) && (
-										<Button variant="bordered">
-											Réservé ! <SCheck />
-										</Button>
-									)}
-								</div>
-							</div>
+								product={product}
+								payments={payments}
+								offer={offer}
+							/>
 						))}
 					</div>
 				</Tab>
