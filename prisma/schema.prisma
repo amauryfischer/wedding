@@ -73,4 +73,5 @@ model Payment {
   from String
   productId String
   amount Int
+  description String
 }

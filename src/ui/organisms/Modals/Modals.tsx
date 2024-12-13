@@ -1,9 +1,10 @@
+import ModalOffer from "./ModalOffer"
 
 
 const Modals = () => {
 	return (
 		<>
-
+			<ModalOffer />
 		</>
 	)
 };

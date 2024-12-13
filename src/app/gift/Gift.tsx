@@ -13,9 +13,11 @@ import {
 import styled from "styled-components"
 import { CalendarBlank, Check } from "@phosphor-icons/react"
 import axios from "axios"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { Payment, Product } from "@prisma/client"
 import ProductPrice from "./ProductPrice"
+import { setIsOpenOfferModal, setProducts } from "@/redux/slice/current.slice"
+import { useDispatch } from "react-redux"
 
 const SContribution = styled.div`
 	background-color: var(--primary50);
@@ -29,6 +31,10 @@ export default function Gift({
 	payments: Payment[]
 }) {
 	const [amount, setAmount] = useState(0)
+	const dispatch = useDispatch()
+	useEffect(() => {
+		dispatch(setProducts(products))
+	}, [])
 	const offer = async ({
 		euros,
 		product
@@ -86,13 +92,34 @@ export default function Gift({
 						value={amount?.toString()}
 						onChange={(e) => setAmount(Number(e.target.value))}
 					/>
-					<Button color="primary" onPress={() => offer({ euros: amount })}>
+					<Button
+						color="primary"
+						onPress={() => {
+							dispatch(
+								setIsOpenOfferModal({
+									isOpenOfferModal: true,
+									offerAmount: amount,
+									offerProductId: undefined
+								})
+							)
+						}}
+					>
 						Offrir
 					</Button>
 				</ButtonGroup>
 			</SContribution>
 			<div className="text-2xl font-bold">🎁 Liste de cadeaux</div>
-			<Tabs color="primary" variant="solid" radius="lg">
+			<Tabs
+				color="primary"
+				variant="solid"
+				radius="lg"
+				classNames={{
+					tabContent: "p-0",
+					tabList: "p-0",
+					wrapper: "p-0",
+					panel: "p-0 px-0 py-0"
+				}}
+			>
 				<Tab key="gift" title="Cadeaux">
 					<div className="flex flex-wrap gap-16 justify-center">
 						{products.map((product) => (
@@ -100,7 +127,6 @@ export default function Gift({
 								key={product.description}
 								product={product}
 								payments={payments}
-								offer={offer}
 							/>
 						))}
 					</div>

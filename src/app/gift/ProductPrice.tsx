@@ -1,3 +1,5 @@
+import { setIsOpenOfferModal, setProducts } from "@/redux/slice/current.slice"
+import { AppDispatch } from "@/redux/store"
 import { ButtonGroup, Input } from "@nextui-org/react"
 
 import { Button } from "@nextui-org/react"
@@ -5,7 +7,8 @@ import { Button } from "@nextui-org/react"
 import { Image, Progress } from "@nextui-org/react"
 import { Check } from "@phosphor-icons/react"
 import { Payment, Product } from "@prisma/client"
-import { useState } from "react"
+import { useEffect, useState } from "react"
+import { useDispatch } from "react-redux"
 import styled from "styled-components"
 
 const SCheck = styled(Check)`
@@ -15,14 +18,14 @@ const SCheck = styled(Check)`
 
 const ProductPrice = ({
 	product,
-	payments,
-	offer
+	payments
 }: {
 	product: Product
 	payments: Payment[]
-	offer: ({ product, euros }: { product: Product; euros: number }) => void
 }) => {
+	const dispatch: AppDispatch = useDispatch()
 	const [amount, setAmount] = useState(0)
+
 	const financed = (product: Product) => {
 		return payments
 			.filter((payment) => payment.productId === product.id)
@@ -30,12 +33,19 @@ const ProductPrice = ({
 			.reduce((acc, curr) => acc + curr, 0)
 	}
 	return (
-		<div key={product.description} className="flex flex-col gap-4 max-w-64">
+		<div
+			key={product.description}
+			className="flex flex-col gap-1 sm:max-w-64 w-full"
+		>
 			<div className="flex flex-col gap-0">
 				<Image
 					src={product.imageUrl}
 					alt={product.description}
-					className="h-64 w-64 object-cover rounded-md"
+					className="sm:h-64 sm:w-64 w-[calc(100vw-2rem)] h-[calc(100vw-2rem)] object-cover rounded-md"
+					classNames={{
+						wrapper: "max-w-full!"
+						// img: "w-full"
+					}}
 				/>
 				<Progress
 					value={financed(product)}
@@ -62,8 +72,13 @@ const ProductPrice = ({
 					<Button
 						color="primary"
 						onPress={() => {
-							setAmount(product.prix)
-							offer({ product, euros: product.prix })
+							dispatch(
+								setIsOpenOfferModal({
+									isOpenOfferModal: true,
+									offerAmount: product.prix,
+									offerProductId: product.id
+								})
+							)
 						}}
 					>
 						Offrir
@@ -82,7 +97,15 @@ const ProductPrice = ({
 							/>
 							<Button
 								color="primary"
-								onPress={() => offer({ product, euros: amount })}
+								onPress={() => {
+									dispatch(
+										setIsOpenOfferModal({
+											isOpenOfferModal: true,
+											offerAmount: amount,
+											offerProductId: product.id
+										})
+									)
+								}}
 								variant="bordered"
 								className="w-full"
 							>

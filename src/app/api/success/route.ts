@@ -7,11 +7,20 @@ export async function GET(req: NextRequest) {
 	const { searchParams } = new URL(req.url)
 	const productId = searchParams.get("productId")
 	const amount = searchParams.get("amount")
+	const from = searchParams.get("from")
+	const description = searchParams.get("description")
+	console.log("create payment", {
+		amount,
+		productId,
+		from,
+		description
+	})
 	await db.payment.create({
 		data: {
 			amount: Number(amount),
 			productId: productId ?? "",
-			from: "gift"
+			from: from ?? "",
+			description: description ?? ""
 		}
 	})
 	return new NextResponse("success", { status: 200 })

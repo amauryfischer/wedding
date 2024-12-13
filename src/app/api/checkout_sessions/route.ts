@@ -8,7 +8,7 @@ const stripe = new Stripe(process.env.STRIPE_SECRET_TEST_KEY!, {
 
 export async function POST(req: NextRequest) {
 	const { data } = await req.json()
-	const { amount, productId } = data
+	const { amount, productId, from, description } = data
 	console.log("received")
 	try {
 		const session = await stripe.checkout.sessions.create({
@@ -26,7 +26,7 @@ export async function POST(req: NextRequest) {
 				}
 			],
 			mode: "payment",
-			success_url: `${process.env.NEXT_PUBLIC_APP_URL}/api/success?productId=${productId}&amount=${amount}`,
+			success_url: `${process.env.NEXT_PUBLIC_APP_URL}/api/success?productId=${productId}&amount=${amount}&from=${from}&description=${description}`,
 			cancel_url: `${process.env.NEXT_PUBLIC_APP_URL}/cancel`
 		})
 
