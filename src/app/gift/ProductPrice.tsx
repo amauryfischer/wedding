@@ -93,7 +93,17 @@ const ProductPrice = ({
 								endContent={<div>€</div>}
 								className="max-w-24"
 								value={amount?.toString()}
-								onChange={(e) => setAmount(Number(e.target.value))}
+								onChange={(e) => {
+									const newAmount = Math.max(0, Number(e.target.value))
+									const totalFinanced = financed(product)
+									const remainingAmount = Number(product.prix) - totalFinanced
+
+									if (newAmount > remainingAmount) {
+										setAmount(remainingAmount)
+									} else {
+										setAmount(newAmount)
+									}
+								}}
 							/>
 							<Button
 								color="primary"

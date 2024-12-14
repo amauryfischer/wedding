@@ -13,7 +13,27 @@ export default async function Page({
 	const amount = searchParams.amount as string
 	const from = searchParams.from as string
 	const description = searchParams.description as string
+	const transactionId = searchParams.transactionId as string
 
+	const existingPayment = await prisma.payment.findFirst({
+		where: {
+			transactionId: transactionId
+		}
+	})
+
+	if (existingPayment) {
+		return <div>Payment already exists</div>
+	}
+
+	await prisma.payment.create({
+		data: {
+			amount: Number(amount),
+			productId: productId,
+			from: from,
+			description: description,
+			transactionId: transactionId
+		}
+	})
 	const product = products.find((p) => p.id === productId)
 
 	return (

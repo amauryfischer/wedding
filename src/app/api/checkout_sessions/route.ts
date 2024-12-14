@@ -1,7 +1,7 @@
 import db from "@/app/db"
 import { NextResponse, NextRequest } from "next/server"
 import Stripe from "stripe"
-
+import { v4 as uuidv4 } from "uuid"
 const stripe = new Stripe(process.env.STRIPE_SECRET_TEST_KEY!, {
 	typescript: true,
 	apiVersion: "2024-09-30.acacia"
@@ -14,6 +14,7 @@ export async function POST(req: NextRequest) {
 	const product = await db.product.findUnique({
 		where: { id: productId }
 	})
+	const transactionId = uuidv4()
 	try {
 		const session = await stripe.checkout.sessions.create({
 			payment_method_types: ["card"],
@@ -31,7 +32,7 @@ export async function POST(req: NextRequest) {
 				}
 			],
 			mode: "payment",
-			success_url: `${process.env.NEXT_PUBLIC_APP_URL}/success?productId=${productId}&amount=${amount}&from=${from}&description=${description}`,
+			success_url: `${process.env.NEXT_PUBLIC_APP_URL}/success?productId=${productId}&amount=${amount}&from=${from}&description=${description}&transactionId=${transactionId}`,
 			cancel_url: `${process.env.NEXT_PUBLIC_APP_URL}/cancel`
 		})
 
