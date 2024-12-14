@@ -1,3 +1,4 @@
+import db from "@/app/db"
 import { NextResponse, NextRequest } from "next/server"
 import Stripe from "stripe"
 
@@ -10,6 +11,9 @@ export async function POST(req: NextRequest) {
 	const { data } = await req.json()
 	const { amount, productId, from, description } = data
 	console.log("received")
+	const product = await db.product.findUnique({
+		where: { id: productId }
+	})
 	try {
 		const session = await stripe.checkout.sessions.create({
 			payment_method_types: ["card"],
@@ -18,7 +22,8 @@ export async function POST(req: NextRequest) {
 					price_data: {
 						currency: "EUR",
 						product_data: {
-							name: "Your Product Name"
+							name: product?.description ?? "Your Product Name",
+							images: [product?.imageUrl ?? ""]
 						},
 						unit_amount: Number(amount) * 100
 					},
@@ -26,7 +31,7 @@ export async function POST(req: NextRequest) {
 				}
 			],
 			mode: "payment",
-			success_url: `${process.env.NEXT_PUBLIC_APP_URL}/api/success?productId=${productId}&amount=${amount}&from=${from}&description=${description}`,
+			success_url: `${process.env.NEXT_PUBLIC_APP_URL}/success?productId=${productId}&amount=${amount}&from=${from}&description=${description}`,
 			cancel_url: `${process.env.NEXT_PUBLIC_APP_URL}/cancel`
 		})
 
