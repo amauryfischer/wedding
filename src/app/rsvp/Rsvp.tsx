@@ -43,12 +43,14 @@ const Rsvp = ({
 		yup.object({
 			eglise: yup
 				.string()
-				.required("La confirmation de la cérémonie est requise"),
+				.required("La confirmation pour la cérémonie est requise"),
 			cocktail: yup
 				.string()
-				.required("La confirmation du cocktail est requise"),
-			diner: yup.string().required("La confirmation du dîner est requise"),
-			brunch: yup.string().required("La confirmation du brunch est requise")
+				.required("La confirmation pour le cocktail est requise"),
+			diner: yup.string().required("La confirmation pour le dîner est requise"),
+			brunch: yup
+				.string()
+				.required("La confirmation pour le brunch est requise")
 		}),
 		yup.object({
 			diet: yup.array().of(yup.string()).optional().default([]),
@@ -116,7 +118,7 @@ const Rsvp = ({
 		<FormProvider {...methods}>
 			<div className="flex h-full w-full">
 				<Image
-					src="/images/maries.jpg"
+					src="/images/mariesBlur.png"
 					alt="rsvp"
 					width={window.innerWidth / 2}
 					className="h-full object-cover hidden md:block"
@@ -128,7 +130,8 @@ const Rsvp = ({
 				<div className="flex flex-col gap-4 p-4 lg:p-12">
 					<div className="flex items-center gap-2">
 						<SCalendarBlank size={24} />
-						Evénement prévu le samedi 7 juin 2025
+						Evénement prévu le samedi 7 juin 2025 à 15h30 en l'église de
+						Saint-Amand à Bordeaux Caudéran.
 					</div>
 					<Spacer y={4} />
 					<div className="text-3xl font-bold">
@@ -136,7 +139,7 @@ const Rsvp = ({
 						<span className="text-primary">Linh-Dan & Amaury</span>
 					</div>
 					<div>
-						Merci de bien vouloir répondre ces quelques questions pour nous
+						Merci de bien vouloir répondre à ces quelques questions pour nous
 						aider à organiser notre mariage. Nous sommes impatients de célébrer
 						ce moment unique avec vous !
 					</div>

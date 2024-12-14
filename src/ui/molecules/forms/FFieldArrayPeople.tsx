@@ -47,7 +47,7 @@ const FFieldArrayPeople = ({
 					key={field.id}
 				>
 					<div className="flex justify-between items-center">
-						<div>Personne {index + 1}</div>
+						<div></div>
 						<Button
 							variant="light"
 							color="danger"
@@ -80,18 +80,20 @@ const FFieldArrayPeople = ({
 					</div>
 				</div>
 			))}
-			<AddPeople
-				className="border-1 border-primary-200 rounded-lg p-6 hover:cursor-pointer hover:bg-primary-100 transition-colors cursor-pointer"
-				onClick={() => append({})}
-				onKeyUp={(e) =>
-					e.key === "Enter" && append({ firstname: "", lastname: "" })
-				}
-			>
-				<div className="flex items-center gap-2">
-					<SPlusCircle size={24} />
-					Ajouter une autre personne
-				</div>
-			</AddPeople>
+			{!fields.length && (
+				<AddPeople
+					className="border-1 border-primary-200 rounded-lg p-6 hover:cursor-pointer hover:bg-primary-100 transition-colors cursor-pointer"
+					onClick={() => append({})}
+					onKeyUp={(e) =>
+						e.key === "Enter" && append({ firstname: "", lastname: "" })
+					}
+				>
+					<div className="flex items-center gap-2">
+						<SPlusCircle size={24} />
+						Ajouter un/une conjoint(e)
+					</div>
+				</AddPeople>
+			)}
 		</div>
 	)
 }

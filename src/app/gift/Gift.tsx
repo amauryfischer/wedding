@@ -58,7 +58,7 @@ export default function Gift({
 		<div className="flex flex-col p-4 gap-8 lg:p-12">
 			<div className="flex gap-2 flex-col md:flex-row md:gap-16">
 				<Image
-					src="/images/maries.jpg"
+					src="/images/mariesBlur.png"
 					alt="rsvp"
 					className="md:h-48 md:w-48 object-cover rounded-md w-full md:block hidden"
 				/>

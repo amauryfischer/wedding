@@ -60,7 +60,7 @@ export default function AppBarMenu() {
 						<div
 							className={`text-white md:text-md text-sm ${location.pathname === "/gallery" ? "md:text-lg font-semibold text-md" : ""}`}
 						>
-							Gallerie photo
+							Galerie photo
 						</div>
 					</Button>
 				</NavbarItem>

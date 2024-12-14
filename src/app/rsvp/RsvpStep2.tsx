@@ -18,10 +18,10 @@ export default function RsvpStep2({ guest }) {
 			</div>
 			<div className="flex flex-col gap-4">
 				<Callout>
-					<div>A l’Église Saint-Amand de Caudéran</div>
+					<div>A l’Église Saint-Amand de Caudéran à 15h30</div>
 				</Callout>
 				<div className="flex gap-2 justify-between w-full items-center">
-					<div>⛪ Cérémonie à l'église *</div>
+					<div>⛪ Cérémonie à l'église</div>
 					<div className="h-1 flex-1 border-b border-dashed border-slate-400" />
 					<FRadios
 						hideLabel
@@ -37,10 +37,13 @@ export default function RsvpStep2({ guest }) {
 				{guest?.Cocktail?.includes("Oui") && (
 					<>
 						<Callout>
-							<div>Au Château Pontet d’Eyrans</div>
+							<div>
+								Au Château Pontet d’Eyrans à partir de 18h30 (53 Rte de Royan,
+								33390 Eyrans)
+							</div>
 						</Callout>
 						<div className="flex gap-2 justify-between w-full items-center">
-							<div>🍹 Cocktail *</div>
+							<div>🍹 Cocktail</div>
 							<div className="h-1 flex-1 border-b border-dashed border-slate-400" />
 							<FRadios
 								hideLabel
@@ -57,7 +60,7 @@ export default function RsvpStep2({ guest }) {
 				)}
 				{guest?.Dîner?.includes("Oui") && (
 					<div className="flex gap-2 justify-between w-full items-center">
-						<div>🍽️ Dîner *</div>
+						<div>🍽️ Dîner</div>
 						<div className="h-1 flex-1 border-b border-dashed border-slate-400" />
 						<FRadios
 							hideLabel
@@ -73,7 +76,7 @@ export default function RsvpStep2({ guest }) {
 				)}
 				{guest?.Brunch?.includes("Oui") && (
 					<div className="flex gap-2 justify-between w-full items-center">
-						<div>🍖 Barbecue du lendemain *</div>
+						<div>🍳 Brunch du lendemain (10h30-13h)</div>
 						<div className="h-1 flex-1 border-b border-dashed border-slate-400" />
 						<FRadios
 							hideLabel

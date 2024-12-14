@@ -13,7 +13,7 @@ const Callout = styled.div`
 export default function RsvpStep4() {
 	return (
 		<div>
-			<div className="font-bold text-2xl">Personnes supplémentaires</div>
+			<div className="font-bold text-2xl">J'enregistre mon/ma conjoint(e)</div>
 			<Spacer y={4} />
 			<FFieldArrayPeople name="guests" />
 		</div>
