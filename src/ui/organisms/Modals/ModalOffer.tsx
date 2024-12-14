@@ -11,22 +11,21 @@ import {
 	Textarea
 } from "@nextui-org/react"
 import { useState } from "react"
-import { useSelector } from "react-redux"
+import { useDispatch, useSelector } from "react-redux"
 import axios from "axios"
 import { Product } from "@prisma/client"
+import { setIsOpenOfferModal } from "@/redux/slice/current.slice"
 
 const ModalOffer = () => {
 	const [from, setFrom] = useState("")
 	const [description, setDescription] = useState("")
 	const { isOpenOfferModal, offerAmount, offerProductId, products } =
 		useSelector((state: RootState) => state.current)
-	const offer = async ({
-		euros,
-		product
-	}: { product?: Product; euros: number }) => {
+	const dispatch = useDispatch()
+	const offer = async ({ euros }: { euros: number }) => {
 		try {
 			const { data } = await axios.post("/api/checkout_sessions", {
-				data: { amount: euros, productId: product?.id, from, description }
+				data: { amount: euros, productId: offerProductId, from, description }
 			})
 			const sessionUrl = data
 
@@ -37,7 +36,18 @@ const ModalOffer = () => {
 		}
 	}
 	return (
-		<Modal isOpen={isOpenOfferModal}>
+		<Modal
+			isOpen={isOpenOfferModal}
+			onOpenChange={() =>
+				dispatch(
+					setIsOpenOfferModal({
+						isOpenOfferModal: false,
+						offerAmount: 0,
+						offerProductId: undefined
+					})
+				)
+			}
+		>
 			<ModalContent>
 				<ModalHeader>
 					Offrir{" "}
