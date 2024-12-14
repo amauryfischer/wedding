@@ -26,7 +26,7 @@ export async function POST(req: NextRequest) {
 							name: product?.description ?? "Your Product Name",
 							images: [product?.imageUrl ?? ""]
 						},
-						unit_amount: Number(amount) * 100
+						unit_amount: Math.round(Number(amount) * 100)
 					},
 					quantity: 1
 				}
