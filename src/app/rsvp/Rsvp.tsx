@@ -76,8 +76,9 @@ const Rsvp = ({
 			currentGuest?.Brunch?.includes("Non")
 		if (step === 4 || (step === 3 && allGuestOnlyCocktail)) {
 			saveGuest(data)
-			alert("Merci pour votre réponse !")
-			router.push("/gift")
+			// alert("Merci pour votre réponse !")
+			// router.push("/gift")
+			setStep(5)
 			return
 		}
 		if (step === 0) {
@@ -111,6 +112,17 @@ const Rsvp = ({
 				return
 			}
 		}
+		if (step === 1) {
+			if (
+				data.cocktail === "non" &&
+				data.diner === "non" &&
+				data.brunch === "non" &&
+				data.eglise === "non"
+			) {
+				setStep(5)
+				return
+			}
+		}
 		setStep(step + 1)
 	}
 
@@ -118,7 +130,7 @@ const Rsvp = ({
 		<FormProvider {...methods}>
 			<div className="flex h-full w-full">
 				<Image
-					src="/images/mariesBlur.png"
+					src="/images/mariesBlur.webp"
 					alt="rsvp"
 					width={window.innerWidth / 2}
 					className="h-full object-cover hidden md:block"
@@ -138,38 +150,43 @@ const Rsvp = ({
 						RSVP | Mariage{" "}
 						<span className="text-primary">Linh-Dan & Amaury</span>
 					</div>
-					<div>
-						Merci de bien vouloir répondre à ces quelques questions pour nous
-						aider à organiser notre mariage. Nous sommes impatients de célébrer
-						ce moment unique avec vous !
-					</div>
+					{step !== 5 && (
+						<div>
+							Merci de bien vouloir répondre à ces quelques questions pour nous
+							aider à organiser notre mariage. Nous sommes impatients de
+							célébrer ce moment unique avec vous !
+						</div>
+					)}
 					<Spacer y={2} />
 					{step === 0 && <RsvpStep1 />}
 					{step === 1 && <RsvpStep2 guest={currentGuest} />}
 					{step === 2 && <RsvpStep3 />}
 					{step === 3 && <RsvpStep4 />}
 					{step === 4 && <RsvpStep5 hebergements={hebergements} />}
+					{step === 5 && <div>Merci pour votre réponse !</div>}
 					<Spacer y={4} />
 					<div className="flex justify-between flex-col md:flex-row gap-4">
+						{step !== 5 && (
+							<div className="flex gap-2">
+								<div
+									className={`w-12 h-4 transition-colors duration-300 ${step === 0 ? "bg-primary" : "bg-slate-200"} hover:bg-primary`}
+								/>
+								<div
+									className={`w-12 h-4 transition-colors duration-300 ${step === 1 ? "bg-primary" : "bg-slate-200"} hover:bg-primary`}
+								/>
+								<div
+									className={`w-12 h-4 transition-colors duration-300 ${step === 2 ? "bg-primary" : "bg-slate-200"} hover:bg-primary`}
+								/>
+								<div
+									className={`w-12 h-4 transition-colors duration-300 ${step === 3 ? "bg-primary" : "bg-slate-200"} hover:bg-primary`}
+								/>
+								<div
+									className={`w-12 h-4 transition-colors duration-300 ${step === 4 ? "bg-primary" : "bg-slate-200"} hover:bg-primary`}
+								/>
+							</div>
+						)}
 						<div className="flex gap-2">
-							<div
-								className={`w-12 h-4 transition-colors duration-300 ${step === 0 ? "bg-primary" : "bg-slate-200"} hover:bg-primary`}
-							/>
-							<div
-								className={`w-12 h-4 transition-colors duration-300 ${step === 1 ? "bg-primary" : "bg-slate-200"} hover:bg-primary`}
-							/>
-							<div
-								className={`w-12 h-4 transition-colors duration-300 ${step === 2 ? "bg-primary" : "bg-slate-200"} hover:bg-primary`}
-							/>
-							<div
-								className={`w-12 h-4 transition-colors duration-300 ${step === 3 ? "bg-primary" : "bg-slate-200"} hover:bg-primary`}
-							/>
-							<div
-								className={`w-12 h-4 transition-colors duration-300 ${step === 4 ? "bg-primary" : "bg-slate-200"} hover:bg-primary`}
-							/>
-						</div>
-						<div className="flex gap-2">
-							{step > 0 && (
+							{step > 0 && step !== 5 && (
 								<Button
 									className="w-fit"
 									variant="bordered"

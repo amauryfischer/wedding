@@ -58,7 +58,7 @@ export default function Gift({
 		<div className="flex flex-col p-4 gap-8 lg:p-12">
 			<div className="flex gap-2 flex-col md:flex-row md:gap-16">
 				<Image
-					src="/images/mariesBlur.png"
+					src="/images/mariesBlur.webp"
 					alt="rsvp"
 					className="md:h-48 md:w-48 object-cover rounded-md w-full md:block hidden"
 				/>
@@ -109,32 +109,16 @@ export default function Gift({
 				</ButtonGroup>
 			</SContribution>
 			<div className="text-2xl font-bold">🎁 Liste de cadeaux</div>
-			<Tabs
-				color="primary"
-				variant="solid"
-				radius="lg"
-				classNames={{
-					tabContent: "p-0",
-					tabList: "p-0",
-					wrapper: "p-0",
-					panel: "p-0 px-0 py-0"
-				}}
-			>
-				<Tab key="gift" title="Cadeaux">
-					<div className="flex flex-wrap gap-16 justify-center">
-						{products.map((product) => (
-							<ProductPrice
-								key={product.description}
-								product={product}
-								payments={payments}
-							/>
-						))}
-					</div>
-				</Tab>
-				<Tab key="travel" title="Voyage de noce">
-					<div>Voyage de noce</div>
-				</Tab>
-			</Tabs>
+
+			<div className="flex flex-wrap gap-16 justify-center">
+				{products.map((product) => (
+					<ProductPrice
+						key={product.description}
+						product={product}
+						payments={payments}
+					/>
+				))}
+			</div>
 		</div>
 	)
 }
