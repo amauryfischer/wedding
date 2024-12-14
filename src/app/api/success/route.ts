@@ -23,5 +23,11 @@ export async function GET(req: NextRequest) {
 			description: description ?? ""
 		}
 	})
-	return new NextResponse("success", { status: 200 })
+	// redirect to the gift thanks page
+	return NextResponse.redirect(
+		new URL(
+			`/gift-thanks?productId=${productId}&amount=${amount}&from=${from}&description=${description}`,
+			req.url
+		)
+	)
 }

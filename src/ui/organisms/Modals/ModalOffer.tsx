@@ -19,11 +19,13 @@ import { setIsOpenOfferModal } from "@/redux/slice/current.slice"
 const ModalOffer = () => {
 	const [from, setFrom] = useState("")
 	const [description, setDescription] = useState("")
+	const [isLoading, setIsLoading] = useState(false)
 	const { isOpenOfferModal, offerAmount, offerProductId, products } =
 		useSelector((state: RootState) => state.current)
 	const dispatch = useDispatch()
 	const offer = async ({ euros }: { euros: number }) => {
 		try {
+			setIsLoading(true)
 			const { data } = await axios.post("/api/checkout_sessions", {
 				data: { amount: euros, productId: offerProductId, from, description }
 			})
@@ -33,6 +35,8 @@ const ModalOffer = () => {
 			window.open(sessionUrl, "_blank")
 		} catch (error) {
 			console.log(error)
+		} finally {
+			setIsLoading(false)
 		}
 	}
 	return (
@@ -73,6 +77,7 @@ const ModalOffer = () => {
 						<Button
 							color="primary"
 							onPress={() => offer({ euros: offerAmount })}
+							isLoading={isLoading}
 						>
 							Offrir
 						</Button>
