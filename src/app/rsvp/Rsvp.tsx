@@ -119,6 +119,7 @@ const Rsvp = ({
 				data.brunch === "non" &&
 				data.eglise === "non"
 			) {
+				saveGuest(data)
 				setStep(5)
 				return
 			}
