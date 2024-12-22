@@ -84,7 +84,9 @@ const Rsvp = ({
 		if (step === 0) {
 			const currentGuestName = `${formatNfdLowerCase(data.firstName)} ${formatNfdLowerCase(data.lastName)}`
 			const guest = allGuests.find(
-				(guest: any) => formatNfdLowerCase(guest.Nom) === currentGuestName
+				(guest: any) =>
+					formatNfdLowerCase(guest.Nom).replace(/\s+/g, "") ===
+					currentGuestName.replace(/\s+/g, "")
 			)
 			if (guest) {
 				setCurrentGuest(guest)

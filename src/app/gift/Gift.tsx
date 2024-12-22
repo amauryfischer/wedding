@@ -69,9 +69,8 @@ export default function Gift({
 					</div>
 					<div className="max-w-2xl">
 						Pour nous accompagner dans cette nouvelle aventure, nous avons créé
-						une cagnotte de mariage Un Grand Jour. Nous vous remercions du fond
-						du cœur pour votre amour et votre soutien en cette occasion si
-						spéciale.
+						une cagnotte de mariage. Un grand merci pour votre générosité et
+						votre présence à nos côtés en ce jour si spécial !
 					</div>
 				</div>
 			</div>

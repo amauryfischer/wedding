@@ -15,7 +15,7 @@ const config: Config = {
 				foreground: "var(--foreground)"
 			},
 			fontFamily: {
-				manrope: ["var(--font-manrope)"]
+				garamond: ["var(--font-garamond)"]
 			}
 		}
 	},
