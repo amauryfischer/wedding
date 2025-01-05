@@ -28,7 +28,7 @@ const ProductPrice = ({
 
 	const financed = (product: Product) => {
 		return payments
-			.filter((payment) => payment.productId === product.id)
+			.filter((payment) => payment.productId === product.externalId)
 			.map((payment) => payment.amount)
 			.reduce((acc, curr) => acc + curr, 0)
 	}
@@ -76,7 +76,7 @@ const ProductPrice = ({
 								setIsOpenOfferModal({
 									isOpenOfferModal: true,
 									offerAmount: product.prix,
-									offerProductId: product.id
+									offerProductId: product.externalId
 								})
 							)
 						}}
@@ -112,7 +112,7 @@ const ProductPrice = ({
 										setIsOpenOfferModal({
 											isOpenOfferModal: true,
 											offerAmount: amount,
-											offerProductId: product.id
+											offerProductId: product.externalId
 										})
 									)
 								}}

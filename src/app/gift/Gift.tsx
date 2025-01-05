@@ -41,7 +41,7 @@ export default function Gift({
 	}: { product?: Product; euros: number }) => {
 		try {
 			const { data } = await axios.post("/api/checkout_sessions", {
-				data: { amount: euros, productId: product?.id }
+				data: { amount: euros, productId: product?.externalId }
 			})
 			const sessionUrl = data
 
