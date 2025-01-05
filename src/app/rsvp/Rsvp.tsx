@@ -142,7 +142,7 @@ const Rsvp = ({
 						img: "rounded-none"
 					}}
 				/>
-				<div className="flex flex-col gap-4 p-4 lg:p-12">
+				<div className="flex flex-col gap-2 p-4 lg:p-12">
 					<div className="flex items-center gap-2">
 						<SCalendarBlank size={24} />
 						Evénement prévu le samedi 7 juin 2025 à 15h30 en l'église de
@@ -156,8 +156,14 @@ const Rsvp = ({
 					{step !== 5 && (
 						<div>
 							Merci de bien vouloir répondre à ces quelques questions pour nous
-							aider à organiser notre mariage. Nous sommes impatients de
-							célébrer ce moment unique avec vous !
+							aider à organiser notre mariage.
+						</div>
+					)}
+					{step !== 5 && (
+						<div>
+							Pour des raisons pratiques, nous ne pourrons pas accueillir les
+							enfants, ils se feront une joie de garder leurs grands-parents
+							pour l'occasion.
 						</div>
 					)}
 					<Spacer y={2} />
@@ -166,7 +172,14 @@ const Rsvp = ({
 					{step === 2 && <RsvpStep3 />}
 					{step === 3 && <RsvpStep4 />}
 					{step === 4 && <RsvpStep5 hebergements={hebergements} />}
-					{step === 5 && <div>Merci pour votre réponse !</div>}
+					{step === 5 && (
+						<div className="flex flex-col gap-8">
+							<div>Merci pour votre réponse !</div>
+							<Button onClick={() => router.push("/gift")}>
+								Accéder à la liste de mariage
+							</Button>
+						</div>
+					)}
 					<Spacer y={4} />
 					<div className="flex justify-between flex-col md:flex-row gap-4">
 						{step !== 5 && (

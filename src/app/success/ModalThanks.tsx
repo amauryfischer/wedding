@@ -27,10 +27,7 @@ const ModalThanks = ({
 							Merci pour votre contribution {from}!
 						</h1>
 						<Spacer y={4} />
-						<p>
-							Vous avez offert {amount}€ à {product?.description} pour{" "}
-							{description}
-						</p>
+						<p>Vous avez offert {amount}€</p>
 					</div>
 				</ModalBody>
 				<ModalFooter>

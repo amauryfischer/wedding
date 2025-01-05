@@ -35,24 +35,7 @@ export default function Gift({
 	useEffect(() => {
 		dispatch(setProducts(products))
 	}, [])
-	const offer = async ({
-		euros,
-		product
-	}: { product?: Product; euros: number }) => {
-		try {
-			const { data } = await axios.post("/api/checkout_sessions", {
-				data: { amount: euros, productId: product?.externalId }
-			})
-			const sessionUrl = data
 
-			// Redirect the user to the Stripe Checkout page
-			window.open(sessionUrl, "_blank")
-		} catch (error) {
-			console.log(error)
-		}
-	}
-
-	console.log("payments", payments)
 
 	return (
 		<div className="flex flex-col p-4 gap-8 lg:p-12">

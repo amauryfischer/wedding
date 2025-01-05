@@ -27,7 +27,13 @@ const ModalOffer = () => {
 		try {
 			setIsLoading(true)
 			const { data } = await axios.post("/api/checkout_sessions", {
-				data: { amount: euros, productId: offerProductId, from, description }
+				data: {
+					amount: euros,
+					productId: offerProductId,
+					from,
+					description,
+					imageUrl: products?.find((p) => p.id === offerProductId)?.imageUrl
+				}
 			})
 			const sessionUrl = data
 

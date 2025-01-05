@@ -10,10 +10,10 @@ const stripe = new Stripe(process.env.STRIPE_SECRET_TEST_KEY!, {
 export async function POST(req: NextRequest) {
 	const { data } = await req.json()
 	const { amount, productId, from, description } = data
-	console.log("received")
-	const product = await db.product.findUnique({
-		where: { id: productId }
+	const product = await db.product.findFirst({
+		where: { externalId: productId }
 	})
+	console.log("received",product)
 	const transactionId = uuidv4()
 	try {
 		const session = await stripe.checkout.sessions.create({
@@ -24,7 +24,7 @@ export async function POST(req: NextRequest) {
 						currency: "EUR",
 						product_data: {
 							name: product?.description ?? "Your Product Name",
-							images: [product?.imageUrl ?? ""]
+							...(product?.imageUrl && { images: [product?.imageUrl] })
 						},
 						unit_amount: Math.round(Number(amount) * 100)
 					},
