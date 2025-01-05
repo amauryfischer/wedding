@@ -27,7 +27,12 @@ const ModalThanks = ({
 							Merci pour votre contribution {from}!
 						</h1>
 						<Spacer y={4} />
-						<p>Vous avez offert {amount}€</p>
+						<p>
+							Vous avez offert {amount}€ pour nous aider à financer notre voyage
+							de noces en Corée du Sud, et nous en sommes infiniment
+							reconnaissants. Merci du fond du cœur ! 💕 Nous avons hâte de
+							vivre cette belle aventure et de la partager avec vous.{" "}
+						</p>
 					</div>
 				</ModalBody>
 				<ModalFooter>

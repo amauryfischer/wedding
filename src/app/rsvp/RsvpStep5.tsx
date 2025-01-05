@@ -40,9 +40,20 @@ export default function RsvpStep5({
 					]}
 				/>
 			</div>
-			<SContainer className="flex gap-2 mt-4 text-sm bg-red-100 rounded-none p-4 text-neutral-700">
-				Possibilité de réserver un hébergement sur place à partir de 70€, merci
-				de nous contacter pour plus d'informations.
+			<SContainer className="mt-4 text-sm bg-red-100 rounded-none p-4 text-neutral-700">
+				Pour plus d’informations sur les options d’hébergement, consultez ce
+				lien :{" "}
+				<a
+					className="underline text-blue-500 hover:text-blue-600"
+					target="_blank"
+					rel="noreferrer"
+					href="https://docs.google.com/spreadsheets/d/1ATZLUprpQnL8MHJKP3XDfTBv9Mkp7bKr/edit?usp=sharing&ouid=105317779838532331466&rtpof=true&sd=true"
+				>
+					Détails des hébergements
+				</a>{" "}
+				Si vous souhaitez réserver, merci de nous contacter directement. Le
+				règlement de votre chambre s’effectuera à votre arrivée, auprès de
+				l’accueil du domaine.
 			</SContainer>
 		</div>
 	)
