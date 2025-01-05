@@ -41,7 +41,7 @@ const ProductPrice = ({
 				<Image
 					src={product.imageUrl}
 					alt={product.description}
-					className="sm:h-64 sm:w-64 w-[calc(100vw-2rem)] h-[calc(100vw-2rem)] object-cover rounded-md"
+					className="sm:h-64 sm:w-64 w-[calc(100vw-2rem)] h-[calc(100vw-2rem)] object-cover rounded-none"
 					classNames={{
 						wrapper: "max-w-full!"
 						// img: "w-full"

@@ -161,7 +161,7 @@ const Rsvp = ({
 					)}
 					{step !== 5 && (
 						<div>
-							Pour des raisons pratiques, nous ne pourrons pas accueillir les
+							👉 Pour des raisons pratiques, nous ne pourrons pas accueillir les
 							enfants, ils se feront une joie de garder leurs grands-parents
 							pour l'occasion.
 						</div>
