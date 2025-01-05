@@ -2,7 +2,7 @@ import db from "@/app/db"
 import { NextResponse, NextRequest } from "next/server"
 import Stripe from "stripe"
 import { v4 as uuidv4 } from "uuid"
-const stripe = new Stripe(process.env.STRIPE_SECRET_TEST_KEY!, {
+const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
 	typescript: true,
 	apiVersion: "2024-09-30.acacia"
 })
