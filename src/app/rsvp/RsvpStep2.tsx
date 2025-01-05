@@ -6,7 +6,6 @@ import styled from "styled-components"
 const Callout = styled.div`
 	background-color: var(--caramel50);
 	padding: 1rem;
-	border-radius: 0.5rem;
 `
 
 export default function RsvpStep2({ guest }) {
