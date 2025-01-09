@@ -5,13 +5,13 @@ import type { Metadata } from "next"
 import { Providers } from "./_Providers/Providers"
 import "./globals.css"
 import { ChildrenContainer } from "./baseCss"
-import { Manrope } from "next/font/google"
+import { EB_Garamond } from "next/font/google"
 
 // If loading a variable font, you don't need to specify the font weight
-const manrope = Manrope({
+const garamond = EB_Garamond({
 	weight: ["400", "700"],
 	display: "swap",
-	variable: "--font-manrope",
+	variable: "--font-garamond",
 	adjustFontFallback: false,
 	subsets: ["latin"]
 })
@@ -27,7 +27,7 @@ export default async function RootLayout({
 	children: React.ReactNode
 }>) {
 	return (
-		<html lang="fr" className={manrope.variable}>
+		<html lang="fr" className={garamond.variable}>
 			<body>
 				<Providers>
 					<GlobalStyle />

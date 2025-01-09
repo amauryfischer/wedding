@@ -1,19 +1,40 @@
-import type { ICoordinates } from "@/type/data/ICoordinates"
-import { createSlice } from "@reduxjs/toolkit"
+import { createSlice, PayloadAction } from "@reduxjs/toolkit"
 import { createAppSlice } from "../createAppSlice"
-import { BUILDING_TYPE } from "@/type/data/IPlanet"
-import { ITaskFight } from "@/type/data/ITask"
-import { User } from "@prisma/client"
+import { Product } from "@prisma/client"
 
 export const currentSlice = createAppSlice({
 	name: "current",
-	initialState: {},
-	reducers: {}
+	initialState: {
+		isOpenOfferModal: false,
+		offerAmount: 0,
+		offerProductId: undefined,
+		products: [] as Product[]
+	},
+	reducers: {
+		setIsOpenOfferModal: (
+			state,
+			action: PayloadAction<{
+				isOpenOfferModal: boolean
+				offerAmount: number
+				offerProductId?: string
+			}>
+		) => {
+			state.isOpenOfferModal = action.payload.isOpenOfferModal
+			state.offerAmount = action.payload.offerAmount
+			state.offerProductId = action.payload.offerProductId
+		},
+		setProducts: (
+			state,
+			action: PayloadAction<{
+				products: Product[]
+			}>
+		) => {
+			state.products = action.payload.products
+		}
+	}
 })
 
 // Action creators are generated for each case reducer function
-export const {
-
-} = currentSlice.actions
+export const { setIsOpenOfferModal, setProducts } = currentSlice.actions
 
 export default currentSlice.reducer

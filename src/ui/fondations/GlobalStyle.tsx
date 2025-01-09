@@ -36,11 +36,14 @@ const GlobalStyle = createGlobalStyle`
             outline: none;
         }
         box-sizing: border-box !important;
-        font-family: var(--font-manrope);
+        font-family: var(--font-garamond);
     }
     body {  
         height: calc(100vh - var(--topbar-height));
         background: unset !important;
+    }
+    header {
+        max-width: 100vw;
     }
     
 `

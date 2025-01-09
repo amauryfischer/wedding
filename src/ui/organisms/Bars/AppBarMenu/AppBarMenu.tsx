@@ -4,12 +4,13 @@ import styled from "styled-components"
 import Link from "next/link"
 import { useLocation } from "react-use"
 import { useRouter } from "next/navigation"
+import { isMobile } from "react-device-detect"
 const ResourcesBox = styled.div`
   width: fit-content;
 `
 
 const StyledAppBar = styled(Navbar)`
-  padding: 0.25rem;
+  /* padding: 0.25rem;
   background-color: var(--primary);
   position: fixed !important;
   box-shadow: 0px 3px 3px -2px rgb(255 255 255 / 20%),
@@ -22,16 +23,16 @@ const StyledAppBar = styled(Navbar)`
     max-width: none !important;
     padding-left: 0.75rem !important;
     padding-right: 0.75rem !important;
-  }
+  } */
 `
 
 export default function AppBarMenu() {
 	const location = useLocation()
 	const router = useRouter()
 	return (
-		<StyledAppBar position="static" className="flex flex-row justify-center">
-			<NavbarContent justify="start" />
-			<NavbarContent className="gap-4" justify="center">
+		<Navbar position="static" className="bg-primary">
+			{!isMobile && <NavbarContent justify="start" />}
+			<NavbarContent className="gap-1 md:gap-4" justify="center">
 				<NavbarItem isActive={location.pathname === "/rsvp"}>
 					<Button onPress={() => router.push("/rsvp")} variant="light">
 						<div
@@ -42,7 +43,11 @@ export default function AppBarMenu() {
 					</Button>
 				</NavbarItem>
 				<NavbarItem isActive={location.pathname === "/gift"}>
-					<Button onPress={() => router.push("/gift")} variant="light">
+					<Button
+						onPress={() => router.push("/gift")}
+						variant="light"
+						size={isMobile ? "sm" : "md"}
+					>
 						<div
 							className={`text-white text-md ${location.pathname === "/gift" ? "text-lg font-semibold" : ""}`}
 						>
@@ -53,14 +58,14 @@ export default function AppBarMenu() {
 				<NavbarItem isActive={location.pathname === "/gallery"}>
 					<Button onPress={() => router.push("/gallery")} variant="light">
 						<div
-							className={`text-white text-md ${location.pathname === "/gallery" ? "text-lg font-semibold" : ""}`}
+							className={`text-white md:text-md text-sm ${location.pathname === "/gallery" ? "md:text-lg font-semibold text-md" : ""}`}
 						>
-							Gallerie photo
+							Galerie photo
 						</div>
 					</Button>
 				</NavbarItem>
 			</NavbarContent>
-			<NavbarContent justify="end" />
-		</StyledAppBar>
+			{!isMobile && <NavbarContent justify="end" />}
+		</Navbar>
 	)
 }

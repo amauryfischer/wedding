@@ -43,8 +43,9 @@ export async function GET() {
 	}
 	const products = tables[0].rows
 
+	// delete all products
+	await prisma.product.deleteMany()
 	Object.entries(products).map(async ([key, value]) => {
-		console.log("key=", key, "value=", value)
 		// value.prix format is €1,645.00
 		const prix = value.prix.replace("€", "").replace(",", "")
 		await prisma.product.create({

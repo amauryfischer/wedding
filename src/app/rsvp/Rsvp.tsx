@@ -29,7 +29,7 @@ const Rsvp = ({
 	hebergements,
 	allGuests
 }: { hebergements: Hebergement[]; allGuests: any }) => {
-	const [step, setStep] = useState(0)
+	const [step, setStep] = useState(4)
 	const router = useRouter()
 	const schemas = [
 		yup.object({
@@ -43,12 +43,14 @@ const Rsvp = ({
 		yup.object({
 			eglise: yup
 				.string()
-				.required("La confirmation de la cérémonie est requise"),
+				.required("La confirmation pour la cérémonie est requise"),
 			cocktail: yup
 				.string()
-				.required("La confirmation du cocktail est requise"),
-			diner: yup.string().required("La confirmation du dîner est requise"),
-			brunch: yup.string().required("La confirmation du brunch est requise")
+				.required("La confirmation pour le cocktail est requise"),
+			diner: yup.string().required("La confirmation pour le dîner est requise"),
+			brunch: yup
+				.string()
+				.required("La confirmation pour le brunch est requise")
 		}),
 		yup.object({
 			diet: yup.array().of(yup.string()).optional().default([]),
@@ -74,14 +76,17 @@ const Rsvp = ({
 			currentGuest?.Brunch?.includes("Non")
 		if (step === 4 || (step === 3 && allGuestOnlyCocktail)) {
 			saveGuest(data)
-			alert("Merci pour votre réponse !")
-			router.push("/gift")
+			// alert("Merci pour votre réponse !")
+			// router.push("/gift")
+			setStep(5)
 			return
 		}
 		if (step === 0) {
 			const currentGuestName = `${formatNfdLowerCase(data.firstName)} ${formatNfdLowerCase(data.lastName)}`
 			const guest = allGuests.find(
-				(guest: any) => formatNfdLowerCase(guest.Nom) === currentGuestName
+				(guest: any) =>
+					formatNfdLowerCase(guest.Nom).replace(/\s+/g, "") ===
+					currentGuestName.replace(/\s+/g, "")
 			)
 			if (guest) {
 				setCurrentGuest(guest)
@@ -109,6 +114,18 @@ const Rsvp = ({
 				return
 			}
 		}
+		if (step === 1) {
+			if (
+				data.cocktail === "non" &&
+				data.diner === "non" &&
+				data.brunch === "non" &&
+				data.eglise === "non"
+			) {
+				saveGuest(data)
+				setStep(5)
+				return
+			}
+		}
 		setStep(step + 1)
 	}
 
@@ -116,57 +133,76 @@ const Rsvp = ({
 		<FormProvider {...methods}>
 			<div className="flex h-full w-full">
 				<Image
-					src="/images/maries.jpg"
+					src="/images/mariesBlur.webp"
 					alt="rsvp"
 					width={window.innerWidth / 2}
-					className="h-full object-cover"
+					className="h-full object-cover hidden md:block"
 					classNames={{
 						wrapper: "rounded-none",
 						img: "rounded-none"
 					}}
 				/>
-				<div className="flex flex-col gap-4 p-12">
+				<div className="flex flex-col gap-2 p-4 lg:p-12">
 					<div className="flex items-center gap-2">
 						<SCalendarBlank size={24} />
-						Evénement prévu le samedi 7 juin 2025
+						Evénement prévu le samedi 7 juin 2025 à 15h30 en l'église de
+						Saint-Amand à Bordeaux Caudéran.
 					</div>
 					<Spacer y={4} />
 					<div className="text-3xl font-bold">
 						RSVP | Mariage{" "}
 						<span className="text-primary">Linh-Dan & Amaury</span>
 					</div>
-					<div>
-						Merci de bien vouloir répondre ces quelques questions pour nous
-						aider à organiser notre mariage. Nous sommes impatients de célébrer
-						ce moment unique avec vous !
-					</div>
+					{step !== 5 && (
+						<div>
+							Merci de bien vouloir répondre à ces quelques questions pour nous
+							aider à organiser notre mariage.
+						</div>
+					)}
+					{step !== 5 && (
+						<div>
+							👉 Bien que nous les aimons fort, nous ne pourrons pas accueillir
+							les enfants à notre mariage. Ils se feront une joie de garder
+							leurs grands-parents pour l'occasion.
+						</div>
+					)}
 					<Spacer y={2} />
 					{step === 0 && <RsvpStep1 />}
 					{step === 1 && <RsvpStep2 guest={currentGuest} />}
 					{step === 2 && <RsvpStep3 />}
 					{step === 3 && <RsvpStep4 />}
 					{step === 4 && <RsvpStep5 hebergements={hebergements} />}
-					<Spacer y={4} />
-					<div className="flex justify-between">
-						<div className="flex gap-2">
-							<div
-								className={`w-12 h-4 transition-colors duration-300 ${step === 0 ? "bg-primary" : "bg-slate-200"} hover:bg-primary`}
-							/>
-							<div
-								className={`w-12 h-4 transition-colors duration-300 ${step === 1 ? "bg-primary" : "bg-slate-200"} hover:bg-primary`}
-							/>
-							<div
-								className={`w-12 h-4 transition-colors duration-300 ${step === 2 ? "bg-primary" : "bg-slate-200"} hover:bg-primary`}
-							/>
-							<div
-								className={`w-12 h-4 transition-colors duration-300 ${step === 3 ? "bg-primary" : "bg-slate-200"} hover:bg-primary`}
-							/>
-							<div
-								className={`w-12 h-4 transition-colors duration-300 ${step === 4 ? "bg-primary" : "bg-slate-200"} hover:bg-primary`}
-							/>
+					{step === 5 && (
+						<div className="flex flex-col gap-8">
+							<div>Merci pour votre réponse !</div>
+							<Button onClick={() => router.push("/gift")}>
+								Accéder à la liste de mariage
+							</Button>
 						</div>
+					)}
+					<Spacer y={4} />
+					<div className="flex justify-between flex-col md:flex-row gap-4">
+						{step !== 5 && (
+							<div className="flex gap-2">
+								<div
+									className={`w-12 h-4 transition-colors duration-300 ${step === 0 ? "bg-primary" : "bg-slate-200"} hover:bg-primary`}
+								/>
+								<div
+									className={`w-12 h-4 transition-colors duration-300 ${step === 1 ? "bg-primary" : "bg-slate-200"} hover:bg-primary`}
+								/>
+								<div
+									className={`w-12 h-4 transition-colors duration-300 ${step === 2 ? "bg-primary" : "bg-slate-200"} hover:bg-primary`}
+								/>
+								<div
+									className={`w-12 h-4 transition-colors duration-300 ${step === 3 ? "bg-primary" : "bg-slate-200"} hover:bg-primary`}
+								/>
+								<div
+									className={`w-12 h-4 transition-colors duration-300 ${step === 4 ? "bg-primary" : "bg-slate-200"} hover:bg-primary`}
+								/>
+							</div>
+						)}
 						<div className="flex gap-2">
-							{step > 0 && (
+							{step > 0 && step !== 5 && (
 								<Button
 									className="w-fit"
 									variant="bordered"
