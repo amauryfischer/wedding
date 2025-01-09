@@ -29,7 +29,7 @@ const Rsvp = ({
 	hebergements,
 	allGuests
 }: { hebergements: Hebergement[]; allGuests: any }) => {
-	const [step, setStep] = useState(4)
+	const [step, setStep] = useState(0)
 	const router = useRouter()
 	const schemas = [
 		yup.object({
