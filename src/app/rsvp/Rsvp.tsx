@@ -29,7 +29,7 @@ const Rsvp = ({
 	hebergements,
 	allGuests
 }: { hebergements: Hebergement[]; allGuests: any }) => {
-	const [step, setStep] = useState(4)
+	const [step, setStep] = useState(0)
 	const router = useRouter()
 	const schemas = [
 		yup.object({
@@ -162,8 +162,7 @@ const Rsvp = ({
 					{step !== 5 && (
 						<div>
 							👉 Bien que nous les aimons fort, nous ne pourrons pas accueillir
-							les enfants à notre mariage. Ils se feront une joie de garder
-							leurs grands-parents pour l'occasion.
+							les enfants à notre mariage.
 						</div>
 					)}
 					<Spacer y={2} />
