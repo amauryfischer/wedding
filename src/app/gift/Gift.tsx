@@ -80,6 +80,10 @@ export default function Gift({
 						Pour nous aider à financer notre nouvelle maison et notre voyage de
 						noces en Corée du Sud ❤️
 					</div>
+					<div className="max-w-lg text-sm">
+						Une urne de mariage sera aussi disponible le jour de la cérémonie.
+						💍
+					</div>
 				</div>
 				<ButtonGroup>
 					<Input
