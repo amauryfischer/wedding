@@ -1,9 +1,9 @@
 "use client"
 
 import { useState } from "react"
-import prisma from "../db"
+import { Guest } from "@prisma/client"
 
-const SecretPage = ({ guests }: { guests: any }) => {
+const SecretPage = ({ guests }: { guests: Guest[] }) => {
 	const [password, setPassword] = useState("")
 	const [isAuthenticated, setIsAuthenticated] = useState(false)
 	const [error, setError] = useState("")
@@ -55,10 +55,11 @@ const SecretPage = ({ guests }: { guests: any }) => {
 								<th className="p-3">Brunch</th>
 								<th className="p-3">Régime</th>
 								<th className="p-3">Intolérances</th>
+								<th className="p-3">Autres</th>
 							</tr>
 						</thead>
 						<tbody>
-							{guests.map((guest: any) => (
+							{guests.map((guest: Guest) => (
 								<tr key={guest.id} className="border-t">
 									<td className="p-3">{guest.lastName}</td>
 									<td className="p-3">{guest.firstName}</td>
@@ -69,6 +70,9 @@ const SecretPage = ({ guests }: { guests: any }) => {
 									<td className="p-3">{guest.brunch}</td>
 									<td className="p-3">{guest.diet.join(", ")}</td>
 									<td className="p-3">{guest.intolerances.join(", ")}</td>
+									<td className="p-3">
+										{JSON.stringify(guest.guests, null, 2)}
+									</td>
 								</tr>
 							))}
 						</tbody>
