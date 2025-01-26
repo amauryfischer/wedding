@@ -1,4 +1,5 @@
 import db from "@/app/db"
+import { Product } from "@prisma/client"
 import { NextResponse, NextRequest } from "next/server"
 import Stripe from "stripe"
 import { v4 as uuidv4 } from "uuid"
@@ -10,10 +11,14 @@ const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
 export async function POST(req: NextRequest) {
 	const { data } = await req.json()
 	const { amount, productId, from, description } = data
-	const product = await db.product.findFirst({
-		where: { externalId: productId }
-	})
-	console.log("received",product)
+	let product: Product | undefined
+	if (!productId) {
+		product = undefined
+	} else {
+		product = await db.product.findFirst({
+			where: { externalId: productId }
+		})
+	}
 	const transactionId = uuidv4()
 	try {
 		const session = await stripe.checkout.sessions.create({
@@ -23,7 +28,9 @@ export async function POST(req: NextRequest) {
 					price_data: {
 						currency: "EUR",
 						product_data: {
-							name: product?.description ?? "Contribution libre",
+							name:
+								product?.description ??
+								"Contribution libre au mariage de Linh-Dan et Amaury",
 							...(product?.imageUrl && { images: [product?.imageUrl] })
 						},
 						unit_amount: Math.round(Number(amount) * 100)

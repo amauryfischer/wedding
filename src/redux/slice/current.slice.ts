@@ -7,7 +7,7 @@ export const currentSlice = createAppSlice({
 	initialState: {
 		isOpenOfferModal: false,
 		offerAmount: 0,
-		offerProductId: undefined,
+		offerProductId: undefined as string | undefined,
 		products: [] as Product[]
 	},
 	reducers: {
