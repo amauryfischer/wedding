@@ -1,9 +1,16 @@
 "use client"
 
 import { useState } from "react"
-import { Guest } from "@prisma/client"
+import { Gift, Guest, Product } from "@prisma/client"
+import { Tab, Tabs } from "@nextui-org/react"
+import Button from "@/ui/atoms/buttons/Button"
+import prisma from "../db"
+import { forceReservation } from "./serverActionSecret"
 
-const SecretPage = ({ guests }: { guests: Guest[] }) => {
+const SecretPage = ({
+	guests,
+	products
+}: { guests: Guest[]; products: Product[] }) => {
 	const [password, setPassword] = useState("")
 	const [isAuthenticated, setIsAuthenticated] = useState(false)
 	const [error, setError] = useState("")
@@ -43,40 +50,88 @@ const SecretPage = ({ guests }: { guests: Guest[] }) => {
 				</form>
 			) : (
 				<div className="overflow-x-auto">
-					<table className="min-w-full bg-white border">
-						<thead>
-							<tr className="bg-gray-100">
-								<th className="p-3">Nom</th>
-								<th className="p-3">Prénom</th>
-								<th className="p-3">Email</th>
-								<th className="p-3">Église</th>
-								<th className="p-3">Cocktail</th>
-								<th className="p-3">Dîner</th>
-								<th className="p-3">Brunch</th>
-								<th className="p-3">Régime</th>
-								<th className="p-3">Intolérances</th>
-								<th className="p-3">Autres</th>
-							</tr>
-						</thead>
-						<tbody>
-							{guests.map((guest: Guest) => (
-								<tr key={guest.id} className="border-t">
-									<td className="p-3">{guest.lastName}</td>
-									<td className="p-3">{guest.firstName}</td>
-									<td className="p-3">{guest.email}</td>
-									<td className="p-3">{guest.eglise}</td>
-									<td className="p-3">{guest.cocktail}</td>
-									<td className="p-3">{guest.diner}</td>
-									<td className="p-3">{guest.brunch}</td>
-									<td className="p-3">{guest.diet.join(", ")}</td>
-									<td className="p-3">{guest.intolerances.join(", ")}</td>
-									<td className="p-3">
-										{JSON.stringify(guest.guests, null, 2)}
-									</td>
-								</tr>
-							))}
-						</tbody>
-					</table>
+					<Tabs>
+						<Tab key="guests" title="Invités">
+							<table className="min-w-full bg-white border">
+								<thead>
+									<tr className="bg-gray-100">
+										<th className="p-3">Nom</th>
+										<th className="p-3">Prénom</th>
+										<th className="p-3">Email</th>
+										<th className="p-3">Église</th>
+										<th className="p-3">Cocktail</th>
+										<th className="p-3">Dîner</th>
+										<th className="p-3">Brunch</th>
+										<th className="p-3">Régime</th>
+										<th className="p-3">Intolérances</th>
+										<th className="p-3">Autres</th>
+									</tr>
+								</thead>
+								<tbody>
+									{guests.map((guest: Guest) => (
+										<tr key={guest.id} className="border-t">
+											<td className="p-3">{guest.lastName}</td>
+											<td className="p-3">{guest.firstName}</td>
+											<td className="p-3">{guest.email}</td>
+											<td className="p-3">{guest.eglise}</td>
+											<td className="p-3">{guest.cocktail}</td>
+											<td className="p-3">{guest.diner}</td>
+											<td className="p-3">{guest.brunch}</td>
+											<td className="p-3">{guest.diet.join(", ")}</td>
+											<td className="p-3">{guest.intolerances.join(", ")}</td>
+											<td className="p-3">
+												{JSON.stringify(guest.guests, null, 2)}
+											</td>
+										</tr>
+									))}
+								</tbody>
+							</table>
+						</Tab>
+						<Tab key="products" title="Produits">
+							<table className="min-w-full bg-white border">
+								<thead>
+									<tr className="bg-gray-100">
+										<th className="p-3">Nom</th>
+										<th className="p-3">Prix</th>
+										<th className="p-3">Réservé</th>
+										<th className="p-3">Forcer la réservation</th>
+									</tr>
+								</thead>
+								<tbody>
+									{products.map((product: Product) => (
+										<tr key={product.id} className="border-t">
+											<td className="p-3">{product.description}</td>
+											<td className="p-3">{product.prix}</td>
+											<td className="p-3">
+												{product.forcedReservation ? "Oui" : "Non"}
+											</td>
+											<td className="p-3">
+												{!product.forcedReservation && (
+													<Button
+														onClick={() => {
+															forceReservation(product.id)
+														}}
+													>
+														Forcer la réservation
+													</Button>
+												)}
+												{product.forcedReservation && (
+													<Button
+														variant="bordered"
+														onClick={() => {
+															forceReservation(product.id)
+														}}
+													>
+														Annuler la réservation
+													</Button>
+												)}
+											</td>
+										</tr>
+									))}
+								</tbody>
+							</table>
+						</Tab>
+					</Tabs>
 				</div>
 			)}
 		</div>

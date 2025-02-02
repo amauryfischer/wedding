@@ -61,6 +61,8 @@ model Product {
   url String
   externalId String
   categorie String?
+  forcedReservation Boolean @default(false)
+
 }
 
 model Payment {

@@ -27,6 +27,9 @@ const ProductPrice = ({
 	const [amount, setAmount] = useState(0)
 
 	const financed = (product: Product) => {
+		if (product.forcedReservation) {
+			return Number(product.prix)
+		}
 		return payments
 			.filter((payment) => payment.productId === product.externalId)
 			.map((payment) => payment.amount)
