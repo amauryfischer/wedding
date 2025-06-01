@@ -6,12 +6,14 @@ import { v4 as uuidv4 } from "uuid"
 import FileUploadIcon from "@mui/icons-material/FileUpload"
 import PhotoCameraIcon from "@mui/icons-material/PhotoCamera"
 import ImageIcon from "@mui/icons-material/Image"
+import { useSearchParams } from "next/navigation"
 
 export default function Page() {
 	const [photoPrise, setPhotoPrise] = React.useState(false)
 	const [imagePreview, setImagePreview] = React.useState<string | null>(null)
 	const [isUploading, setIsUploading] = React.useState(false)
 	const [selectedFile, setSelectedFile] = React.useState<File | null>(null)
+	const searchParams = useSearchParams()
 	const fileInputRef = useRef<HTMLInputElement>(null)
 
 	const uploadImage = (data: Blob | null) => {
@@ -24,7 +26,7 @@ export default function Page() {
 				method: "PUT",
 				headers: {
 					"Content-Type": "image/png",
-					unnomdifferent: "h^#E!S5/7%GLJg3w(9ctb*"
+					unnomdifferent: searchParams.get("token") as string
 				},
 				body: data
 			}

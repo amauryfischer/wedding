@@ -1,5 +1,6 @@
 "use client"
 import { RepeatOneSharp } from "@mui/icons-material"
+import { useSearchParams } from "next/navigation"
 import { useEffect, useRef, useState } from "react"
 
 export default function Page() {
@@ -9,6 +10,7 @@ export default function Page() {
 	const [displayedImageIndex, setDisplayeImageIndex] = useState<number | null>(
 		null
 	)
+    const searchParams = useSearchParams()
 
 	let webSocket: WebSocket
 
@@ -28,7 +30,7 @@ export default function Page() {
 			{
 				method: "GET",
 				headers: {
-					unnomdifferent: "h^#E!S5/7%GLJg3w(9ctb*"
+					unnomdifferent: searchParams.get("tokenDeux") as string
 				}
 			}
 		).then((response) => {
@@ -47,7 +49,7 @@ export default function Page() {
 	useEffect(() => {
 		console.log("setup")
 		webSocket = new WebSocket(
-			"wss://swk5nkkaz8.execute-api.eu-west-3.amazonaws.com/production?token=unsecretde33chiffres!"
+			`wss://swk5nkkaz8.execute-api.eu-west-3.amazonaws.com/production?token=${searchParams.get("tokenUn")}`
 		)
 		webSocket.onmessage = (event) => {
 			console.log(event)
