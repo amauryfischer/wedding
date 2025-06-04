@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from "next/server"
+import { v4 as uuidv4 } from "uuid"
 
 export async function POST(request: NextRequest) {
 	try {
@@ -33,9 +34,12 @@ export async function POST(request: NextRequest) {
 		const result = await turnstileResponse.json()
 
 		if (result.success) {
+			const presignedUrl = `https://72t1jvrie5.execute-api.eu-west-3.amazonaws.com/etape/manager/`
+
 			return NextResponse.json({
 				success: true,
-				message: "Captcha vérifié avec succès, url présigné : <a remplir>"
+				message: "Captcha vérifié avec succès",
+				presignedUrl: presignedUrl
 			})
 		}
 

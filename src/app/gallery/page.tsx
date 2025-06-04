@@ -19,6 +19,7 @@ export default function Page() {
 	const [captchaError, setCaptchaError] = useState<string | null>(null)
 	const [isVerified, setIsVerified] = useState(false)
 	const [isLoading, setIsLoading] = useState(true)
+	const [presignedUrl, setPresignedUrl] = useState<string | null>(null)
 
 	const searchParams = useSearchParams()
 	const fileInputRef = useRef<HTMLInputElement>(null)
@@ -26,31 +27,37 @@ export default function Page() {
 	// Charger l'état de vérification depuis localStorage
 	useEffect(() => {
 		const verified = localStorage.getItem("gallery-user-verified")
+		const storedUrl = localStorage.getItem("gallery-presigned-url")
 		setIsVerified(verified === "true")
+		setPresignedUrl(storedUrl)
 		setIsLoading(false)
 	}, [])
 
 	// Sauvegarder l'état de vérification dans localStorage
-	const updateVerificationStatus = (status: boolean) => {
+	const updateVerificationStatus = (status: boolean, url?: string) => {
 		setIsVerified(status)
 		localStorage.setItem("gallery-user-verified", status.toString())
+		if (url) {
+			setPresignedUrl(url)
+			localStorage.setItem("gallery-presigned-url", url)
+		}
 	}
 
 	const uploadImage = (data: Blob | null) => {
-		if (!data) return
+		if (!data || !presignedUrl) {
+			alert("Erreur : URL de téléversement manquante")
+			return
+		}
 		setIsUploading(true)
-		const id = uuidv4()
-		fetch(
-			`https://72t1jvrie5.execute-api.eu-west-3.amazonaws.com/etape/manager/${id}`,
-			{
-				method: "PUT",
-				headers: {
-					"Content-Type": "image/png",
-					unnomdifferent: searchParams.get("token") as string
-				},
-				body: data
-			}
-		)
+		const imageId = uuidv4()
+		fetch(`${presignedUrl}${imageId}`, {
+			method: "PUT",
+			headers: {
+				"Content-Type": "image/png",
+				unnomdifferent: searchParams.get("token") as string
+			},
+			body: data
+		})
 			.then(() => {
 				alert("Envoi réussi")
 				setImagePreview(null)
@@ -83,8 +90,8 @@ export default function Page() {
 
 			const result = await response.json()
 
-			if (result.success) {
-				updateVerificationStatus(true)
+			if (result.success && result.presignedUrl) {
+				updateVerificationStatus(true, result.presignedUrl)
 			} else {
 				setCaptchaError("Échec de la vérification. Veuillez réessayer.")
 			}
