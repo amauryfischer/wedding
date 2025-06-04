@@ -9,6 +9,7 @@ import ImageIcon from "@mui/icons-material/Image"
 import SecurityIcon from "@mui/icons-material/Security"
 import { useSearchParams } from "next/navigation"
 import { Turnstile } from "@marsidev/react-turnstile"
+import { Stringifier } from "postcss"
 
 export default function Page() {
 	const [photoPrise, setPhotoPrise] = React.useState(false)
@@ -34,12 +35,17 @@ export default function Page() {
 	}, [])
 
 	// Sauvegarder l'état de vérification dans localStorage
-	const updateVerificationStatus = (status: boolean, url?: string) => {
+	const updateVerificationStatus = (
+		status: boolean,
+		result: { presignedUrl?: string; apiToken: string; WSSToken: string }
+	) => {
 		setIsVerified(status)
 		localStorage.setItem("gallery-user-verified", status.toString())
-		if (url) {
-			setPresignedUrl(url)
-			localStorage.setItem("gallery-presigned-url", url)
+		localStorage.setItem("apiToken", result.apiToken)
+		localStorage.setItem("WSSToekn", result.WSSToken)
+		if (result.presignedUrl) {
+			setPresignedUrl(result.presignedUrl)
+			localStorage.setItem("gallery-presigned-url", result.presignedUrl)
 		}
 	}
 
@@ -54,7 +60,7 @@ export default function Page() {
 			method: "PUT",
 			headers: {
 				"Content-Type": "image/png",
-				unnomdifferent: searchParams.get("token") as string
+				unnomdifferent: localStorage.getItem("apiToken") as string
 			},
 			body: data
 		})
@@ -91,7 +97,7 @@ export default function Page() {
 			const result = await response.json()
 
 			if (result.success && result.presignedUrl) {
-				updateVerificationStatus(true, result.presignedUrl)
+				updateVerificationStatus(true, result)
 			} else {
 				setCaptchaError("Échec de la vérification. Veuillez réessayer.")
 			}

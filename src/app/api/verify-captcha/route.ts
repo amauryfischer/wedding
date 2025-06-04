@@ -34,12 +34,15 @@ export async function POST(request: NextRequest) {
 		const result = await turnstileResponse.json()
 
 		if (result.success) {
-			const presignedUrl = `https://72t1jvrie5.execute-api.eu-west-3.amazonaws.com/etape/manager/`
+			const presignedUrl =
+				"https://72t1jvrie5.execute-api.eu-west-3.amazonaws.com/etape/manager/"
 
 			return NextResponse.json({
 				success: true,
 				message: "Captcha vérifié avec succès",
-				presignedUrl: presignedUrl
+				presignedUrl: presignedUrl,
+				apiToken: process.env.API_PHOTO_SECRET,
+				WSSToken: process.env.API_WEBSOCKET_SECRET
 			})
 		}
 
