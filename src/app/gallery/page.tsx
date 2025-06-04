@@ -1,20 +1,40 @@
 "use client"
 import { Button, Card, CardBody, Image } from "@nextui-org/react"
-import React, { ChangeEvent, ChangeEventHandler } from "react"
-import { useRef } from "react"
+import React, { ChangeEvent, ChangeEventHandler, useEffect } from "react"
+import { useRef, useState } from "react"
 import { v4 as uuidv4 } from "uuid"
 import FileUploadIcon from "@mui/icons-material/FileUpload"
 import PhotoCameraIcon from "@mui/icons-material/PhotoCamera"
 import ImageIcon from "@mui/icons-material/Image"
+import SecurityIcon from "@mui/icons-material/Security"
 import { useSearchParams } from "next/navigation"
+import { Turnstile } from "@marsidev/react-turnstile"
 
 export default function Page() {
 	const [photoPrise, setPhotoPrise] = React.useState(false)
 	const [imagePreview, setImagePreview] = React.useState<string | null>(null)
 	const [isUploading, setIsUploading] = React.useState(false)
 	const [selectedFile, setSelectedFile] = React.useState<File | null>(null)
+	const [isVerifyingCaptcha, setIsVerifyingCaptcha] = useState(false)
+	const [captchaError, setCaptchaError] = useState<string | null>(null)
+	const [isVerified, setIsVerified] = useState(false)
+	const [isLoading, setIsLoading] = useState(true)
+
 	const searchParams = useSearchParams()
 	const fileInputRef = useRef<HTMLInputElement>(null)
+
+	// Charger l'état de vérification depuis localStorage
+	useEffect(() => {
+		const verified = localStorage.getItem("gallery-user-verified")
+		setIsVerified(verified === "true")
+		setIsLoading(false)
+	}, [])
+
+	// Sauvegarder l'état de vérification dans localStorage
+	const updateVerificationStatus = (status: boolean) => {
+		setIsVerified(status)
+		localStorage.setItem("gallery-user-verified", status.toString())
+	}
 
 	const uploadImage = (data: Blob | null) => {
 		if (!data) return
@@ -47,6 +67,41 @@ export default function Page() {
 			.finally(() => {
 				setIsUploading(false)
 			})
+	}
+
+	// Vérification du captcha
+	const handleCaptchaSuccess = async (token: string) => {
+		setIsVerifyingCaptcha(true)
+		setCaptchaError(null)
+
+		try {
+			const response = await fetch("/api/verify-captcha", {
+				method: "POST",
+				headers: { "Content-Type": "application/json" },
+				body: JSON.stringify({ token })
+			})
+
+			const result = await response.json()
+
+			if (result.success) {
+				updateVerificationStatus(true)
+			} else {
+				setCaptchaError("Échec de la vérification. Veuillez réessayer.")
+			}
+		} catch (error) {
+			console.error("Erreur vérification captcha:", error)
+			setCaptchaError("Erreur de connexion. Veuillez réessayer.")
+		} finally {
+			setIsVerifyingCaptcha(false)
+		}
+	}
+
+	const handleCaptchaError = () => {
+		setCaptchaError("Erreur lors du chargement du captcha. Rechargez la page.")
+	}
+
+	const handleCaptchaExpire = () => {
+		setCaptchaError("Le captcha a expiré. Veuillez le refaire.")
 	}
 
 	const onfileSelection: ChangeEventHandler<HTMLInputElement> = (e) => {
@@ -111,6 +166,72 @@ export default function Page() {
 		}
 	}
 
+	if (isLoading) {
+		// Chargement initial
+		return (
+			<div
+				className="flex flex-col items-center justify-center p-4 text-white"
+				style={{
+					height: "calc(100vh - var(--navbar-height) - 100px)",
+					overflow: "hidden"
+				}}
+			>
+				<div className="animate-spin rounded-full h-8 w-8 border-b-2 border-white" />
+			</div>
+		)
+	}
+
+	if (!isVerified) {
+		// Si pas encore vérifié, afficher le captcha
+		return (
+			<div
+				className="flex flex-col items-center justify-center p-4 text-white"
+				style={{
+					height: "calc(100vh - var(--navbar-height) - 100px)",
+					overflow: "hidden"
+				}}
+			>
+				<Card className="max-w-md w-full bg-white/30 backdrop-blur-md">
+					<CardBody className="p-8 space-y-6 text-center">
+						<div className="flex flex-col items-center space-y-4">
+							<SecurityIcon style={{ fontSize: 64, color: "#6B7280" }} />
+							<h1 className="text-3xl font-bold text-gray-800">
+								Vérification de sécurité
+							</h1>
+							<p className="text-gray-700">
+								Pour protéger notre galerie, veuillez compléter cette
+								vérification rapide.
+							</p>
+						</div>
+
+						{captchaError && (
+							<div className="p-3 bg-red-100 border border-red-400 text-red-700 rounded">
+								{captchaError}
+							</div>
+						)}
+
+						<div className="flex justify-center">
+							<Turnstile
+								siteKey={process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY || ""}
+								onSuccess={handleCaptchaSuccess}
+								onError={handleCaptchaError}
+								onExpire={handleCaptchaExpire}
+							/>
+						</div>
+
+						{isVerifyingCaptcha && (
+							<div className="flex items-center justify-center space-x-2">
+								<div className="animate-spin rounded-full h-5 w-5 border-b-2 border-blue-600" />
+								<span className="text-gray-700">Vérification en cours...</span>
+							</div>
+						)}
+					</CardBody>
+				</Card>
+			</div>
+		)
+	}
+
+	// Interface principale une fois vérifié
 	return (
 		<div
 			className="flex flex-col items-center justify-center p-4 text-white"
