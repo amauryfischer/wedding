@@ -1,5 +1,5 @@
 "use client"
-import { Button, Card, CardBody, Image } from "@nextui-org/react"
+import { Button, Card, CardBody, Image, Input } from "@nextui-org/react"
 import React, { ChangeEvent, ChangeEventHandler, useEffect } from "react"
 import { useRef, useState } from "react"
 import { v4 as uuidv4 } from "uuid"
@@ -24,6 +24,7 @@ export default function Page() {
 
 	const searchParams = useSearchParams()
 	const fileInputRef = useRef<HTMLInputElement>(null)
+	const messageInputRef = useRef<HTMLInputElement>(null)
 
 	// Charger l'état de vérification depuis localStorage
 	useEffect(() => {
@@ -56,6 +57,7 @@ export default function Page() {
 		}
 		setIsUploading(true)
 		const imageId = uuidv4()
+		// envoi de la photo
 		fetch(`${presignedUrl}${imageId}`, {
 			method: "PUT",
 			headers: {
@@ -80,6 +82,19 @@ export default function Page() {
 			.finally(() => {
 				setIsUploading(false)
 			})
+		if (messageInputRef.current?.value) {
+			// envoi du potentiel message
+			fetch(`${presignedUrl}${imageId}/message`, {
+				method: "PUT",
+				headers: {
+					"Content-Type": "application/json",
+					unnomdifferent: localStorage.getItem("apiToken") as string
+				},
+				body: JSON.stringify({
+					message: messageInputRef.current?.value
+				})
+			})
+		}
 	}
 
 	// Vérification du captcha
@@ -311,26 +326,34 @@ export default function Page() {
 						)}
 
 						{imagePreview && (
-							<div className="grid grid-cols-2 gap-4">
-								<Button
-									color="primary"
-									variant="solid"
-									startContent={isUploading ? null : <FileUploadIcon />}
-									onClick={handleUploadSelectedImage}
-									className="w-full"
-									isLoading={isUploading}
-								>
-									Envoyer cette photo
-								</Button>
-								<Button
-									color="warning"
-									variant="flat"
-									onClick={handleRetakeOrChooseAnother}
-									className="w-full"
-								>
-									{photoPrise ? "Reprendre" : "Choisir une autre"}
-								</Button>
-							</div>
+							<>
+								<div className="grid grid-cols-1 gap-4">
+									<Input
+										ref={messageInputRef}
+										placeholder="Vous pouvez joidnre un message"
+									/>
+								</div>
+								<div className="grid grid-cols-2 gap-4">
+									<Button
+										color="primary"
+										variant="solid"
+										startContent={isUploading ? null : <FileUploadIcon />}
+										onClick={handleUploadSelectedImage}
+										className="w-full"
+										isLoading={isUploading}
+									>
+										Envoyer cette photo
+									</Button>
+									<Button
+										color="warning"
+										variant="flat"
+										onClick={handleRetakeOrChooseAnother}
+										className="w-full"
+									>
+										{photoPrise ? "Reprendre" : "Choisir une autre"}
+									</Button>
+								</div>
+							</>
 						)}
 						{imagePreview && (
 							<Button
