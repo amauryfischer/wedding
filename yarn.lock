@@ -719,6 +719,16 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@marsidev/react-turnstile@npm:^1.1.0":
+  version: 1.1.0
+  resolution: "@marsidev/react-turnstile@npm:1.1.0"
+  peerDependencies:
+    react: ^17.0.2 || ^18.0.0 || ^19.0
+    react-dom: ^17.0.2 || ^18.0.0 || ^19.0
+  checksum: 10c0/58d599bcc8bb8f01b90c166e13394d2890f0a75eb7cc354fb4187b36a53976c31495a50e87ecd3ae5bcbf5b63a0585f11064dd83bb908faa5b13d5f200ad397a
+  languageName: node
+  linkType: hard
+
 "@mediapipe/tasks-vision@npm:0.10.17":
   version: 0.10.17
   resolution: "@mediapipe/tasks-vision@npm:0.10.17"
@@ -3289,26 +3299,19 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@react-hookz/deep-equal@npm:^1.0.4":
-  version: 1.0.4
-  resolution: "@react-hookz/deep-equal@npm:1.0.4"
-  checksum: 10c0/f48774ccc63506e8de29eb6f3beff1204a5f51e481329f6b38b578bb43b35391eeacd9908f35a7fcca008e4c7e5144be7092103236042a8bcbbe4e7594ed4eb9
-  languageName: node
-  linkType: hard
-
-"@react-hookz/web@npm:^24.0.4":
-  version: 24.0.4
-  resolution: "@react-hookz/web@npm:24.0.4"
+"@react-hookz/web@npm:^25.1.1":
+  version: 25.1.1
+  resolution: "@react-hookz/web@npm:25.1.1"
   dependencies:
-    "@react-hookz/deep-equal": "npm:^1.0.4"
+    "@ver0/deep-equal": "npm:^1.0.0"
   peerDependencies:
     js-cookie: ^3.0.5
-    react: ^16.8 || ^17 || ^18
-    react-dom: ^16.8 || ^17 || ^18
+    react: ^16.8 || ^17 || ^18 || ^19
+    react-dom: ^16.8 || ^17 || ^18 || ^19
   peerDependenciesMeta:
     js-cookie:
       optional: true
-  checksum: 10c0/894419b88601938b6b2027c8bc77a7e470de4cf196a2d461d53842b037cae57a2abe8e7279edd01ab56d7c671dd155de7795f6e717331c7fdb89734eafac8769
+  checksum: 10c0/1c4524d789abdf5a36ccf7b115a97be501d15da56e55e0e7b12619e39131a2c52b8232d73d30533d51c841d5d262dee140f656b93f34ef1be0056acc27d0ec82
   languageName: node
   linkType: hard
 
@@ -4948,6 +4951,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@ver0/deep-equal@npm:^1.0.0":
+  version: 1.0.0
+  resolution: "@ver0/deep-equal@npm:1.0.0"
+  checksum: 10c0/027a83b454a3f4790e0230537598104283745688c32155f4214526bc47d263ccb0f15f3e37d5663df7931e6542db6a999d128a8c4acf81101815386a5252813c
+  languageName: node
+  linkType: hard
+
 "@webgpu/types@npm:*":
   version: 0.1.51
   resolution: "@webgpu/types@npm:0.1.51"
@@ -6425,13 +6435,14 @@ __metadata:
     "@emotion/styled": "npm:^11.11.5"
     "@hookform/resolvers": "npm:^3.9.0"
     "@lottiefiles/react-lottie-player": "npm:^3.5.4"
+    "@marsidev/react-turnstile": "npm:^1.1.0"
     "@mui/icons-material": "npm:^5.15.19"
     "@mui/material": "npm:^6.1.2"
     "@nextui-org/react": "npm:2.4.8"
     "@phosphor-icons/react": "npm:^2.1.7"
     "@prisma/adapter-pg": "npm:^5.19.1"
     "@prisma/client": "npm:^5.19.1"
-    "@react-hookz/web": "npm:^24.0.4"
+    "@react-hookz/web": "npm:^25.1.1"
     "@react-three/drei": "npm:^9.106.0"
     "@react-three/fiber": "npm:^8.16.8"
     "@reduxjs/toolkit": "npm:^2.2.5"
