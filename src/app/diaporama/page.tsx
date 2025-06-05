@@ -1,16 +1,15 @@
 "use client"
 import { RepeatOneSharp } from "@mui/icons-material"
-import { useSearchParams } from "next/navigation"
 import { useEffect, useRef, useState } from "react"
 
 export default function Page() {
+	const [message, setMessage] = useState<string | null>(null)
 	const [images, setImages] = useState<string[]>([])
 	const imagesRef = useRef(images)
 	const imageRef = useRef<HTMLImageElement>(null)
 	const [displayedImageIndex, setDisplayeImageIndex] = useState<number | null>(
 		null
 	)
-    const searchParams = useSearchParams()
 
 	let webSocket: WebSocket
 
@@ -25,19 +24,33 @@ export default function Page() {
 		})
 	}
 	const displayImage = (key: string) => {
-		fetch(
+		const imagePromise = fetch(
 			`https://72t1jvrie5.execute-api.eu-west-3.amazonaws.com/etape/manager/${key}`,
 			{
 				method: "GET",
 				headers: {
-					unnomdifferent: searchParams.get("tokenDeux") as string
+					unnomdifferent: localStorage.getItem("apiToken") as string
 				}
 			}
-		).then((response) => {
-			response.blob().then((data) => {
+		)
+		const messagePromise = fetch(
+			`https://72t1jvrie5.execute-api.eu-west-3.amazonaws.com/etape/manager/${key}/message`,
+			{
+				method: "GET",
+				headers: {
+					unnomdifferent: localStorage.getItem("apiToken") as string
+				}
+			}
+		)
+		Promise.all([imagePromise, messagePromise]).then((values) => {
+			values[0].blob().then((data) => {
 				if (imageRef.current) {
 					imageRef.current.src = URL.createObjectURL(data)
 				}
+				values[1].json().then((body) => {
+					console.log(`Message recu: ${JSON.stringify(body)}`)
+					setMessage(body.body.message)
+				})
 			})
 		})
 	}
@@ -49,7 +62,7 @@ export default function Page() {
 	useEffect(() => {
 		console.log("setup")
 		webSocket = new WebSocket(
-			`wss://swk5nkkaz8.execute-api.eu-west-3.amazonaws.com/production?token=${searchParams.get("tokenUn")}`
+			`wss://swk5nkkaz8.execute-api.eu-west-3.amazonaws.com/production?token=${localStorage.getItem("WSSToken")}`
 		)
 		webSocket.onmessage = (event) => {
 			console.log(event)
@@ -119,6 +132,7 @@ export default function Page() {
 				ref={imageRef}
 				alt="currentDisplayedImage"
 			/>
+			{message && <h3>{message}</h3>}
 		</div>
 	)
 }

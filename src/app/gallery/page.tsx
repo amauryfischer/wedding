@@ -43,7 +43,7 @@ export default function Page() {
 		setIsVerified(status)
 		localStorage.setItem("gallery-user-verified", status.toString())
 		localStorage.setItem("apiToken", result.apiToken)
-		localStorage.setItem("WSSToekn", result.WSSToken)
+		localStorage.setItem("WSSToken", result.WSSToken)
 		if (result.presignedUrl) {
 			setPresignedUrl(result.presignedUrl)
 			localStorage.setItem("gallery-presigned-url", result.presignedUrl)
